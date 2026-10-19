@@ -1,0 +1,28 @@
+# Unity generated files
+UnityProject/Library/
+UnityProject/Temp/
+UnityProject/Obj/
+UnityProject/Logs/
+UnityProject/UserSettings/
+UnityProject/Build/
+UnityProject/Builds/
+UnityProject/MemoryCaptures/
+UnityProject/Recordings/
+
+# IDE generated files
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.sln
+*.suo
+*.user
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Unity temporary files
+*.tmp
+*.bak
