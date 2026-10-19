@@ -8,6 +8,9 @@ namespace UltimaJugada
         public int CompletedPasses { get; internal set; }
         public int Shots { get; internal set; }
         public int PlayerGoals { get; internal set; }
+        public int TeammateShots { get; internal set; }
+        public int TeammateGoals { get; internal set; }
+        public int Assists { get; internal set; }
         public int Interceptions { get; internal set; }
         public int Interventions { get; internal set; }
         public int PrecisionTotal { get; internal set; }

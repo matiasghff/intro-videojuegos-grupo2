@@ -1,0 +1,107 @@
+{
+  "unityVersion": "6000.5.10f1",
+  "tests": {
+    "editmode": {
+      "total": 42,
+      "passed": 42,
+      "failed": 0,
+      "finishedUTC": "2026-10-19 13:02:19Z"
+    },
+    "playmode": {
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "finishedUTC": "2026-10-19 13:02:37Z"
+    }
+  },
+  "sourceScriptsSHA256": {
+    "UnityProject/Assets/Scripts/Core/GameManager.cs": "31236a2dc64309fd11b1a930638418b9c78f291e6e6ed9d692cc455fb6ad1c8b",
+    "UnityProject/Assets/Scripts/Core/GameState.cs": "1ca7cf6b222fd25ef7fd08e6ba0c78a3266cfc4491dc4fb832fe4b6cb394641a",
+    "UnityProject/Assets/Scripts/Core/MatchConfig.cs": "dcab76faa83d79c4ddebab1727b66ce29b9ff900d7d426b2d3649a7c5b302f5c",
+    "UnityProject/Assets/Scripts/Core/SceneFlowController.cs": "f2a91baca188aaf2bab8cbe43d5493be584f0e51acc42cab92656d679e739687",
+    "UnityProject/Assets/Scripts/Editor/ProjectBootstrap.cs": "9a929e3d5bc20d4edff60bd595e4b747d382126f7d4dd486a4af2eaeeb6553b6",
+    "UnityProject/Assets/Scripts/Gameplay/BallController.cs": "b911b15a1ff6bb81b6422e82084fa6858e7c6f814dc3ac4fb769401727237a1c",
+    "UnityProject/Assets/Scripts/Gameplay/Ballistics.cs": "977eee73a3ce9542f990b86dd1809500986388194f6168151fd3bdf014078371",
+    "UnityProject/Assets/Scripts/Gameplay/DefenderAI.cs": "b8228ca6dffdb9f01abfb18c292b9c3f1d5d78b625231dbc9d15ae4ce08ee198",
+    "UnityProject/Assets/Scripts/Gameplay/DribbleController.cs": "130b58d881ffd5627655b492248c5cdd09471c00d7bd345eb10a5eba64f2d345",
+    "UnityProject/Assets/Scripts/Gameplay/GameInput.cs": "a95fd31826fa3169834eb9e357f85fc35dae906f86513f13a7e1ebc69fe6714c",
+    "UnityProject/Assets/Scripts/Gameplay/IInterventionController.cs": "d882f08d0f8767be11b32a3fa91654da954a0e4dacfc160ff5c86a91da87488a",
+    "UnityProject/Assets/Scripts/Gameplay/PassShotController.cs": "b1ab7a201dc72ab93fb8c8c2fa52a738fc45af40118ff6ba8e3609bb4a193c19",
+    "UnityProject/Assets/Scripts/Gameplay/PlayerController.cs": "7d3b8230dd64b1fb424df80e93835a32e552184c0dd236a35a6fde3625e6883d",
+    "UnityProject/Assets/Scripts/Gameplay/PrecisionController.cs": "037502ad2854a48c6987bfc732b704d0a3f261e49715087d582ace0a06241770",
+    "UnityProject/Assets/Scripts/Match/MatchClock.cs": "70716cd6a90456b2800672eea9de3b72f31c1872a7a169815c40e1cc0e65b017",
+    "UnityProject/Assets/Scripts/Match/MatchEngine.cs": "6272a69b24b025e92967a4beb4ba3de2c2e4e8e77a5c76042297715ba4a0f70c",
+    "UnityProject/Assets/Scripts/Match/MatchEventGenerator.cs": "6fd725f471ada9773593f0929718fc6aebe66c08099c3a20937dc810102707b4",
+    "UnityProject/Assets/Scripts/Match/MatchSimulationManager.cs": "fc0a6cd360c0b1683866278b351a36c9d0318b8420301a6f244c3960540b0b4c",
+    "UnityProject/Assets/Scripts/Match/MatchStats.cs": "ca7a3c73f06603fec9c6cc78db46cbf3e9e60d73b9d71781343a5bcd52a4367e",
+    "UnityProject/Assets/Scripts/Presentation/FieldView.cs": "45eede23dfdde891ec99437c136759dd18bec386690535525b6c32eb98065fa2",
+    "UnityProject/Assets/Scripts/Presentation/FootballerVisual.cs": "c22573d87b108738ead938130ee667494e71c63e0e787a26ad3e15177db02a6b",
+    "UnityProject/Assets/Scripts/Systems/AffinitySystem.cs": "87373af92e7966b6fac2e2bfcba28606c55ec91d9890ce2c96dba501185aa8cf",
+    "UnityProject/Assets/Scripts/Systems/StaminaSystem.cs": "361c069d3e5fb37dc5053bcae04793d3f355ef406e5695f6bade79c03212d6d9",
+    "UnityProject/Assets/Scripts/UI/MainMenuUI.cs": "f4b6188662e5091ef8590bedbe9162c79b4a4f4690b494f5e93b764f473f618f",
+    "UnityProject/Assets/Scripts/UI/MatchHUD.cs": "1d8850e091cda3fb25e5ca6f6c27313d2d13eb2a1d32517cdef46415478b6071",
+    "UnityProject/Assets/Scripts/UI/MatchResultUI.cs": "c9864283241520defef9af21a0c0c1a7ba89d0dd1bf80c83463ba0fa42ba8deb",
+    "UnityProject/Assets/Scripts/UI/UIFactory.cs": "1986886ac5610d585cca73aa842c1e2011b83c3bee485cced96b8179ee0f9cc4"
+  },
+  "features": {
+    "simulationSpeeds": [
+      1,
+      1.5,
+      2
+    ],
+    "baseOpportunityMinutes": [
+      6,
+      13,
+      21,
+      29,
+      36,
+      42,
+      50,
+      58,
+      65,
+      73,
+      80,
+      87
+    ],
+    "successfulDribbleOffersPassOrShot": true,
+    "successfulPassFollowUpChance": 0.9,
+    "maximumAimArrowLength": 2.4,
+    "movingPrecisionTarget": true
+  },
+  "macOS": {
+    "buildSucceeded": true,
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "codesignDeepStrictPassed": true,
+    "zipExtractedSignaturePassed": true,
+    "startupSeconds": 6,
+    "aliveBeforeSIGTERM": true,
+    "exitAfterSIGTERM": -15,
+    "runtimeExceptionsObserved": false
+  },
+  "artifacts": {
+    "previewMacOSZip": {
+      "path": "UnityProject/Builds/UltimaJugada-Actualizacion-macOS.zip",
+      "bytes": 47412486,
+      "sha256": "3c553b8850c8f877bcc10511f3e28ecb3e7b620cd3fb327cba227ee0704ea29e"
+    }
+  },
+  "renderedScreenshots": [
+    "screenshots/01-main-menu.png",
+    "screenshots/02-dribble.png",
+    "screenshots/03-pass-aim.png",
+    "screenshots/04-precision.png",
+    "screenshots/05-result.png",
+    "screenshots/06-dribble-choice.png",
+    "screenshots/07-teammate-shot.png",
+    "screenshots/08-teammate-goal.png"
+  ],
+  "checkpointReportUnchanged": true,
+  "limitations": [
+    "Screenshots render production Canvas and field offscreen; they are not manual play captures.",
+    "Native startup covers initialization and menu; it terminates via SIGTERM and does not test the quit button.",
+    "Human testing of difficulty and control feel remains pending."
+  ]
+}

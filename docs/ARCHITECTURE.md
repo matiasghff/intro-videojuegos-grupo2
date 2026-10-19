@@ -8,13 +8,15 @@
 
 ```text
 Simulating → Intervention → Resolution → Simulating
+Resolution → elección de pase/tiro → Intervention (regate exitoso)
+Resolution → Intervention (remate tras pase exitoso)
 Simulating → HalfTime → Simulating
 Simulating → FullTime → escena MatchResult
 ```
 
-Solo `Simulating` consume tiempo. El reloj se limita al siguiente evento, oportunidad, descanso o final y procesa los límites en orden. Un frame largo no salta oportunidades. `Resolve` acepta únicamente la intervención activa y cambia de fase antes de notificar; evita aplicar dos veces los goles o estadísticas. A 90′ no se generan eventos ni oportunidades nuevos.
+Solo `Simulating` consume tiempo. Su velocidad seleccionable (1, 1.5 o 2) multiplica el presupuesto de `Tick`; no se modifica `Time.timeScale`. Los controladores reciben segundos reales, conservando la duración de movimiento, precisión y vuelo. El calendario contiene doce oportunidades base; las continuaciones no consumen entradas del calendario ni minutos. El reloj se limita al siguiente evento, oportunidad, descanso o final y procesa los límites en orden. Un frame largo no salta oportunidades. `Resolve` acepta únicamente la intervención activa y cambia de fase antes de notificar; evita aplicar dos veces los goles o estadísticas. A 90′ no se generan eventos ni oportunidades nuevos.
 
-`MatchEventGenerator` produce relato y goles de equipo/rival con un generador `System.Random` de seed explícito. Los goles automáticos actualizan el mismo estado que los goles del jugador; únicamente estos últimos aumentan `PlayerGoals`.
+`MatchEventGenerator` produce relato y goles de equipo/rival con un generador `System.Random` de seed explícito. Los goles del relato actualizan el mismo estado que los goles del jugador; únicamente estos últimos aumentan `PlayerGoals`. Un segundo generador con seed independiente decide si un pase completado continúa (90 %) y quién remata (55 % jugador / 45 % compañero). El gol o la atajada del compañero se resuelven mediante el controlador y contactos, y registran `TeammateShots`, `TeammateGoals` y `Assists` aparte de los intentos y goles del jugador.
 
 ## Escenas y presentación
 
@@ -24,9 +26,9 @@ Solo `Simulating` consume tiempo. El reloj se limita al siguiente evento, oportu
 | Match | MatchSimulationManager, FieldView, cámara, césped, marcas, arco y red | HUD y actores de cada intervención |
 | MatchResult | MatchResultUI, cámara | Resultado y estadísticas del estado persistente |
 
-`MatchSimulationManager` conecta motor, campo y controlador activo. Se suscribe a `InterventionStarted`, crea una sola jugada y destruye los actores previos. Al resolver, muestra el resultado por 3,5 segundos o hasta CONTINUAR; en el descanso espera 7 segundos o el botón. Cancela sus suscripciones al destruirse.
+`MatchSimulationManager` conecta motor, campo y controlador activo. Se suscribe a `InterventionStarted`, crea una sola jugada y destruye los actores previos. Al resolver, muestra el resultado por 2,5 segundos o hasta CONTINUAR; si hay continuación tras pase espera solo 0,65 s de feedback y crea la siguiente jugada. Un regate exitoso abre inmediatamente dos botones de elección mediante `PendingFollowUp.ChoosePassOrShot`. El reloj sigue pausado y `ChooseFollowUp` acepta una sola decisión válida; en el descanso espera 7 segundos o el botón. Cancela sus suscripciones al destruirse.
 
-La UI usa uGUI con CanvasScaler 1920×1080 y `InputSystemUIInputModule`. Las referencias visuales se crean juntas al iniciar cada pantalla, sin búsquedas continuas ni referencias que sobrevivan a su escena. `FieldView` genera primitivas y líneas originales. La cancha y sus materiales están guardados en disco; los actores se generan según la jugada, por lo que no requieren prefabs configurados manualmente.
+La UI usa uGUI con CanvasScaler 1920×1080 y `InputSystemUIInputModule`. Las referencias visuales se crean juntas al iniciar cada pantalla, sin búsquedas continuas ni referencias que sobrevivan a su escena. `FieldView` genera un estadio con tribunas, vallas, marcas, porterías, red, materiales iluminados y cámara inclinada. Los futbolistas tienen cuerpo, uniforme, extremidades, cabeza y sombra de contacto; `FootballerVisual` orienta los actores y anima las piernas según su desplazamiento, sin modificar las reglas. Los actores de simulación se mueven y se pasan el balón como presentación del relato. La cancha y sus materiales están guardados en disco; los actores se generan según la jugada, por lo que no requieren prefabs configurados manualmente.
 
 ## Mecánicas
 
@@ -34,8 +36,8 @@ La UI usa uGUI con CanvasScaler 1920×1080 y `InputSystemUIInputModule`. Las ref
 - `PlayerController`: modelo de posición, dirección y movimiento normalizado; consume resistencia al correr.
 - `DefenderAI`: posiciones y tres roles permanentes. Mantiene velocidad base 2,1, predicción 2,2 y cobertura 2,5 del handoff.
 - `DribbleController`: representa los modelos, comprueba contacto relativo entre movimientos, línea objetivo y límite de tiempo. Usa pasos de hasta 1/60 s para estabilidad.
-- `PassShotController`: fases Aiming, Dragging, Precision, Flight y Finished; conserva dirección y potencia antes del clic de precisión. Solo la trayectoria y los contactos resuelven el resultado.
-- `PrecisionController`: balón procedural en UI, círculo real de selección, puntuación radial y timeout a cero. Se destruyen textura, sprite y panel al salir.
+- `PassShotController`: fases Aiming, Dragging, Precision, Flight y Finished; conserva dirección y potencia antes del clic de precisión. La flecha y el indicador de arrastre tienen largo máximo configurable de 2,4 unidades; el alcance físico sigue dependiendo de la potencia. En `TeammateShot` prepara y ejecuta un remate automático, sin consumir un intento de precisión del jugador. Las continuaciones se sitúan en campo ofensivo. Solo la trayectoria y los contactos resuelven el resultado.
+- `PrecisionController`: balón procedural en UI con movimiento continuo en dos ejes, limitado al área interior del panel. La velocidad es configurable; el clic se evalúa contra la posición que se mostraba al recibirlo, con puntuación radial y timeout a cero. Se destruyen textura, sprite y panel al salir.
 - `BallController`: movimiento analítico con desaceleración constante. El alcance final es `v²/(2a)` y no depende de la tasa de frames.
 - `Ballistics`: cálculos de precisión, error angular, pérdida de potencia, contactos segmento–círculo y cruce de gol. Los contactos se ordenan por el primer punto del recorrido, evitando atravesar objetivos o recibir después de salir del campo.
 
@@ -54,6 +56,8 @@ La precisión produce `error = 1 - precisiónEfectiva/100`, desviación de `±12
 `ProjectBootstrap` pertenece a un assembly solo Editor. Crea los assets ausentes, asigna la referencia de FieldView, guarda escenas y materiales y configura el orden de compilación. Preserva el contenido y GUID de las escenas existentes. La escena de inicio de Play es MainMenu incluso si el Editor tiene abierta SampleScene. Los comandos de build/export usan las tres escenas del juego.
 
 Los nombres de archivos generados, el identificador de aplicación y el nombre técnico del producto usan ASCII. También se usa `ULTIMA JUGADA` sin tilde en la interfaz por decisión del equipo. El generador puede migrar los nombres antiguos de materiales de césped mediante `AssetDatabase.MoveAsset`, preservando sus GUID. El build universal verifica la firma local de macOS; no se usa una identidad de distribución externa.
+
+`Refresh Match Presentation` reconstruye solo el `FieldView` de Match y conserva el GUID de la escena; los materiales existentes se actualizan conservando sus GUID. Las escenas antiguas también reconocen la ausencia del estadio nuevo y renuevan su presentación al iniciar, por lo que no dependen de ejecutar ese comando para jugar.
 
 La reparación sincroniza además el nombre interno del material con su archivo y lo guarda con `SaveAssetIfDirty`, incluso cuando el archivo ya tiene el nombre correcto. Se ejecuta al recargar el código del Editor y al generar o exportar, sin reescribir las escenas existentes.
 

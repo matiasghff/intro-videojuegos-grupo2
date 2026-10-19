@@ -3,7 +3,8 @@ using System.Collections.Generic;
 namespace UltimaJugada
 {
     public enum MatchPhase { Simulating, HalfTime, Intervention, Resolution, FullTime }
-    public enum InterventionKind { Dribble, Pass, Shot }
+    public enum InterventionKind { Dribble, Pass, Shot, TeammateShot }
+    public enum FollowUpKind { None, ChoosePassOrShot, PlayerShot, TeammateShot }
     public enum ActionOutcome { Success, Intercepted, Missed, Short, Saved, Timeout }
 
     public readonly struct ActionResult
@@ -23,6 +24,7 @@ namespace UltimaJugada
         public int AwayGoals { get; internal set; }
         public MatchPhase Phase { get; internal set; } = MatchPhase.Simulating;
         public InterventionKind CurrentIntervention { get; internal set; }
+        public bool IsChainedIntervention { get; internal set; }
         public string Possession { get; internal set; } = "Ultima Jugada";
         public string Status { get; internal set; } = "El partido continúa…";
         public readonly StaminaSystem Stamina = new StaminaSystem();

@@ -19,7 +19,10 @@ MonoBehaviour:
     dribbleTimeLimit: 16
     aimingTimeLimit: 22
     precisionTimeLimit: 2
+    precisionTargetSpeed: 1.7
     maxDragDistance: 4
+    maxAimArrowLength: 2.4
+    passFollowUpChance: 0.9
     minShotSpeed: 4
     maxShotSpeed: 12
     ballDeceleration: 4

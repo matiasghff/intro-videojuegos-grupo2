@@ -19,7 +19,7 @@ namespace UltimaJugada.Tests
         }
 
         [TestCase(1)] [TestCase(42)] [TestCase(2026)]
-        public void WholeMatchHasSixActionsHalftimeAndMonotonicClock(int seed)
+        public void WholeMatchHasTwelveBaseActionsHalftimeAndMonotonicClock(int seed)
         {
             var engine = new MatchEngine(new MatchSettings(), seed);
             var actions = new List<InterventionKind>();
@@ -37,7 +37,7 @@ namespace UltimaJugada.Tests
                     float paused = engine.State.Minute;
                     engine.Tick(10000f);
                     Assert.That(engine.State.Minute, Is.EqualTo(paused));
-                    var result = new ActionResult(engine.State.CurrentIntervention, ActionOutcome.Success, 100);
+                    var result = new ActionResult(engine.State.CurrentIntervention, ActionOutcome.Timeout);
                     Assert.That(engine.Resolve(result), Is.True);
                     Assert.That(engine.Resolve(result), Is.False, "A result cannot be counted twice");
                     engine.Tick(10f);
@@ -49,10 +49,9 @@ namespace UltimaJugada.Tests
             Assert.That(engine.State.Minute, Is.EqualTo(90f));
             Assert.That(engine.State.Phase, Is.EqualTo(MatchPhase.FullTime));
             Assert.That(halftimes, Is.EqualTo(1));
-            Assert.That(actions.Count, Is.EqualTo(6));
+            Assert.That(actions.Count, Is.EqualTo(12));
             Assert.That(actions.Distinct().Count(), Is.EqualTo(3));
-            Assert.That(engine.State.Stats.PlayerGoals, Is.EqualTo(2));
-            Assert.That(engine.State.HomeGoals, Is.GreaterThanOrEqualTo(2));
+            Assert.That(engine.State.Stats.PlayerGoals, Is.Zero);
             int count = engine.State.Events.Count;
             engine.Tick(10000f);
             engine.Continue();
@@ -118,10 +117,10 @@ namespace UltimaJugada.Tests
         public void ExtremeFatigueIsGuaranteedByLateDribbleEvenWithNoRunning()
         {
             var e = new MatchEngine(new MatchSettings(), 6);
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 24; i++)
             {
                 e.Tick(10000);
-                if (e.State.Minute == 72f)
+                if (e.State.Minute == 80f)
                 {
                     Assert.That(e.State.Stamina.Extreme, Is.True);
                     return;
@@ -131,6 +130,119 @@ namespace UltimaJugada.Tests
                 { e.Resolve(new ActionResult(e.State.CurrentIntervention, ActionOutcome.Timeout)); e.Continue(); }
             }
             Assert.Fail("The late dribble was not scheduled");
+        }
+
+        [TestCase(0, 1f)] [TestCase(1, 1.5f)] [TestCase(2, 2f)] [TestCase(3, 1f)]
+        public void SimulationSpeedCyclesAndScalesClockWithoutSkippingAnIntervention(int clicks, float multiplier)
+        {
+            var e = new MatchEngine(new MatchSettings(), 7);
+            for (int i = 0; i < clicks; i++) e.CycleSimulationSpeed();
+            Assert.That(e.SimulationSpeed, Is.EqualTo(multiplier));
+            e.Tick(1f);
+            Assert.That(e.State.Minute, Is.EqualTo(e.Settings.simulatedMinutesPerSecond * multiplier).Within(0.0001f));
+            e.Tick(10000f);
+            Assert.That(e.State.Minute, Is.EqualTo(6f));
+            e.Tick(10000f);
+            Assert.That(e.State.Minute, Is.EqualTo(6f), "Speed must never advance the intervention clock");
+        }
+
+        [TestCase(InterventionKind.Pass)] [TestCase(InterventionKind.Shot)]
+        public void SuccessfulDribbleImmediatelyOffersEitherFollowUpAtTheSameMinute(InterventionKind choice)
+        {
+            var e = new MatchEngine(new MatchSettings(), 3);
+            e.Tick(10000f);
+            e.Resolve(new ActionResult(InterventionKind.Dribble, ActionOutcome.Success));
+            Assert.That(e.PendingFollowUp, Is.EqualTo(FollowUpKind.ChoosePassOrShot));
+            e.Continue(); e.Tick(10000f);
+            Assert.That(e.State.Minute, Is.EqualTo(6f));
+            Assert.That(e.ChooseFollowUp(InterventionKind.Dribble), Is.False);
+            Assert.That(e.ChooseFollowUp(choice), Is.True);
+            Assert.That(e.State.CurrentIntervention, Is.EqualTo(choice));
+            Assert.That(e.State.Phase, Is.EqualTo(MatchPhase.Intervention));
+            Assert.That(e.State.IsChainedIntervention, Is.True);
+            Assert.That(e.State.Minute, Is.EqualTo(6f));
+            Assert.That(e.ChooseFollowUp(choice), Is.False);
+        }
+
+        private static MatchEngine ResolveFirstPass(int seed, ActionOutcome outcome, float chance = 0.9f)
+        {
+            var e = new MatchEngine(new MatchSettings { passFollowUpChance = chance }, seed);
+            e.Tick(10000f);
+            e.Resolve(new ActionResult(InterventionKind.Dribble, ActionOutcome.Timeout));
+            e.Continue(); e.Tick(10000f);
+            e.Resolve(new ActionResult(InterventionKind.Pass, outcome, 100));
+            return e;
+        }
+
+        [Test]
+        public void SuccessfulPassStronglyFavorsImmediateShotsAndCanChooseBothFinishers()
+        {
+            int player = 0, teammate = 0;
+            for (int seed = 0; seed < 1000; seed++)
+            {
+                var e = ResolveFirstPass(seed, ActionOutcome.Success);
+                if (e.PendingFollowUp == FollowUpKind.PlayerShot) player++;
+                else if (e.PendingFollowUp == FollowUpKind.TeammateShot) teammate++;
+                else continue;
+                e.Continue();
+                Assert.That(e.State.Phase, Is.EqualTo(MatchPhase.Intervention));
+                Assert.That(e.State.Minute, Is.EqualTo(13f));
+                Assert.That(e.State.IsChainedIntervention, Is.True);
+            }
+            Assert.That(player + teammate, Is.InRange(840, 960));
+            Assert.That(player, Is.GreaterThan(300));
+            Assert.That(teammate, Is.GreaterThan(250));
+            Assert.That(ResolveFirstPass(3, ActionOutcome.Intercepted, 1f).PendingFollowUp, Is.EqualTo(FollowUpKind.None));
+            Assert.That(ResolveFirstPass(3, ActionOutcome.Success, 0f).PendingFollowUp, Is.EqualTo(FollowUpKind.None));
+        }
+
+        [TestCase(ActionOutcome.Success)] [TestCase(ActionOutcome.Saved)]
+        public void TeammateShotCountsTeamGoalAndAssistWithoutPlayerShotOrPrecision(ActionOutcome outcome)
+        {
+            MatchEngine e = null;
+            for (int seed = 0; seed < 50; seed++)
+            {
+                e = ResolveFirstPass(seed, ActionOutcome.Success, 1f);
+                if (e.PendingFollowUp == FollowUpKind.TeammateShot) break;
+            }
+            Assert.That(e.PendingFollowUp, Is.EqualTo(FollowUpKind.TeammateShot));
+            e.Continue();
+            int goals = e.State.HomeGoals;
+            var result = new ActionResult(InterventionKind.TeammateShot, outcome);
+            Assert.That(e.Resolve(result), Is.True);
+            Assert.That(e.Resolve(result), Is.False);
+            Assert.That(e.State.Stats.TeammateShots, Is.EqualTo(1));
+            Assert.That(e.State.Stats.Shots, Is.Zero);
+            Assert.That(e.State.Stats.PlayerGoals, Is.Zero);
+            Assert.That(e.State.Stats.PrecisionAttempts, Is.EqualTo(1));
+            Assert.That(e.State.Stats.Interventions, Is.EqualTo(2));
+            Assert.That(e.State.HomeGoals, Is.EqualTo(goals + (outcome == ActionOutcome.Success ? 1 : 0)));
+            Assert.That(e.State.Stats.Assists, Is.EqualTo(outcome == ActionOutcome.Success ? 1 : 0));
+        }
+
+        [TestCase(1)] [TestCase(42)] [TestCase(2026)]
+        public void WholeSuccessfulMatchWithChainsStillReachesHalftimeAndNinetyWithoutLosingScheduledActions(int seed)
+        {
+            var e = new MatchEngine(new MatchSettings { passFollowUpChance = 1f }, seed);
+            int scheduled = 0, halftime = 0;
+            for (int step = 0; step < 80 && e.State.Phase != MatchPhase.FullTime; step++)
+            {
+                e.Tick(10000f);
+                if (e.State.Phase == MatchPhase.HalfTime) { halftime++; e.Continue(); }
+                else if (e.State.Phase == MatchPhase.Intervention)
+                {
+                    if (!e.State.IsChainedIntervention) scheduled++;
+                    e.Resolve(new ActionResult(e.State.CurrentIntervention, ActionOutcome.Success, e.State.CurrentIntervention == InterventionKind.TeammateShot ? -1 : 100));
+                    if (e.PendingFollowUp == FollowUpKind.ChoosePassOrShot) e.ChooseFollowUp(InterventionKind.Pass);
+                    else e.Continue();
+                }
+            }
+            Assert.That(e.State.Phase, Is.EqualTo(MatchPhase.FullTime));
+            Assert.That(e.State.Minute, Is.EqualTo(90f));
+            Assert.That(scheduled, Is.EqualTo(12));
+            Assert.That(halftime, Is.EqualTo(1));
+            Assert.That(e.State.Stats.Interventions, Is.GreaterThan(12));
+            Assert.That(e.State.HomeGoals, Is.GreaterThanOrEqualTo(e.State.Stats.PlayerGoals + e.State.Stats.TeammateGoals));
         }
 
         [Test]

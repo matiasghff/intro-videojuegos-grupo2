@@ -17,7 +17,10 @@ namespace UltimaJugada
         [Min(1f)] public float dribbleTimeLimit = 16f;
         [Min(1f)] public float aimingTimeLimit = 22f;
         [Min(0.2f)] public float precisionTimeLimit = 2f;
+        [Min(0f)] public float precisionTargetSpeed = 1.7f;
         [Min(0.1f)] public float maxDragDistance = 4f;
+        [Min(0.1f)] public float maxAimArrowLength = 2.4f;
+        [Range(0f, 1f)] public float passFollowUpChance = 0.9f;
         [Min(0.1f)] public float minShotSpeed = 4f;
         [Min(1f)] public float maxShotSpeed = 12f;
         [Min(0.1f)] public float ballDeceleration = 4f;

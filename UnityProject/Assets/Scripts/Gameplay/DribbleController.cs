@@ -20,6 +20,7 @@ namespace UltimaJugada
             engine = match;
             this.hud = hud;
             this.complete = complete;
+            hud.SetPower(0f, false);
             remaining = match.Settings.dribbleTimeLimit;
             Player = new PlayerController(new Vector3(0, 0.6f, -7));
             playerView = field.Player("Tú · dorsal 10", Player.Position);

@@ -15,6 +15,8 @@ namespace UltimaJugada
         public int RawPrecision { get; private set; }
         public float EffectivePrecision { get; private set; }
         public float Power { get; private set; }
+        public LineRenderer AimArrow => aimLine;
+        public LineRenderer DragIndicator => dragLine;
         private readonly FieldView field;
         private readonly MatchEngine engine;
         private readonly MatchHUD hud;
@@ -26,6 +28,8 @@ namespace UltimaJugada
         private Vector3 plannedDirection;
         private float plannedSpeed, remaining, flightTime;
         private readonly float initialStamina;
+        private float autoShotDelay = 0.85f;
+        private bool Automated => kind == InterventionKind.TeammateShot;
 
         public PassShotController(FieldView field, MatchEngine engine, MatchHUD hud, InterventionKind kind, Action<ActionResult> complete)
         {
@@ -37,14 +41,16 @@ namespace UltimaJugada
             initialStamina = engine.State.Stamina.Value;
             remaining = engine.Settings.aimingTimeLimit;
             Phase = BallActionPhase.Aiming;
-            float startZ = kind == InterventionKind.Shot ? -2.8f : -5.5f;
-            BallView = field.Ball(new Vector3(0, 0.25f, startZ));
-            field.Player("Tú · rematador", new Vector3(-0.65f, 0.6f, startZ - 0.7f));
+            float startZ = Automated ? 4.4f : engine.State.IsChainedIntervention ? (kind == InterventionKind.Pass ? 1f : 1.8f) : kind == InterventionKind.Shot ? -2.8f : -5.5f;
+            float startX = Automated ? 2.6f : 0f;
+            BallView = field.Ball(new Vector3(startX, 0.25f, startZ));
+            field.Player(Automated ? "Compañero · rematador" : "Tú · rematador", new Vector3(startX - 0.65f, 0.6f, startZ - 0.7f));
             if (kind == InterventionKind.Pass)
             {
-                ReceiverView = field.Player("Compañero receptor", new Vector3(2.6f, 0.6f, 3.2f));
-                field.ReceptionRing(new Vector3(2.6f, 0, 3.2f), engine.State.Affinity.ReceptionRadius);
-                defender = field.Player("Rival · intercepta pases", new Vector3(-0.35f, 0.6f, -0.8f), true);
+                float receiverZ = engine.State.IsChainedIntervention ? 4.4f : 3.2f;
+                ReceiverView = field.Player("Compañero receptor", new Vector3(2.6f, 0.6f, receiverZ));
+                field.ReceptionRing(new Vector3(2.6f, 0, receiverZ), engine.State.Affinity.ReceptionRadius);
+                defender = field.Player("Rival · intercepta pases", new Vector3(-0.35f, 0.6f, engine.State.IsChainedIntervention ? 2.8f : -0.8f), true);
             }
             else
             {
@@ -53,13 +59,29 @@ namespace UltimaJugada
             }
             dragLine = field.AimLine("Arrastre · hacia atrás", new Color(1f, 0.79f, 0.25f));
             aimLine = field.AimLine("Trayectoria prevista", new Color(0.67f, 0.94f, 0.39f));
+            aimLine.positionCount = 5;
             Precision = new PrecisionController(hud.Canvas);
+            hud.SetPower(0f, !Automated);
             UpdateHUD();
         }
 
         public void Tick(float deltaTime)
         {
             if (Finished) return;
+            if (Automated && Phase == BallActionPhase.Aiming)
+            {
+                autoShotDelay -= deltaTime;
+                if (autoShotDelay <= 0f)
+                {
+                    plannedDirection = (new Vector3(engine.TeammateAimX, 0.25f, FieldView.GoalLine) - BallView.position).normalized;
+                    plannedSpeed = 10f;
+                    Power = 0.75f;
+                    ball = new BallController(BallView.position, plannedDirection, plannedSpeed, engine.Settings.ballDeceleration);
+                    Phase = BallActionPhase.Flight;
+                }
+                UpdateHUD();
+                return;
+            }
             if (Phase == BallActionPhase.Aiming || Phase == BallActionPhase.Dragging)
             {
                 remaining -= deltaTime;
@@ -82,14 +104,25 @@ namespace UltimaJugada
                         plannedDirection = drag.sqrMagnitude > 0.0001f ? -drag.normalized : Vector3.forward;
                         plannedSpeed = Mathf.Lerp(engine.Settings.minShotSpeed, engine.Settings.maxShotSpeed, Power);
                         dragLine.enabled = aimLine.enabled = true;
-                        dragLine.SetPosition(0, BallView.position); dragLine.SetPosition(1, BallView.position + drag);
-                        aimLine.SetPosition(0, BallView.position); aimLine.SetPosition(1, BallView.position + plannedDirection * (plannedSpeed * plannedSpeed / (2f * engine.Settings.ballDeceleration)));
-                        if (GameInput.Released)
-                        {
-                            dragLine.enabled = aimLine.enabled = false;
-                            if (drag.magnitude < 0.12f) Phase = BallActionPhase.Aiming;
-                            else { Phase = BallActionPhase.Precision; Precision.Begin(engine.Settings.precisionTimeLimit); }
-                        }
+                        float length = Mathf.Max(0.1f, engine.Settings.maxAimArrowLength) * Power;
+                        dragLine.SetPosition(0, BallView.position); dragLine.SetPosition(1, BallView.position - plannedDirection * length);
+                        // Compact arrow: power is shown by its bounded length and the HUD meter.
+                        aimLine.SetPosition(0, BallView.position);
+                        Vector3 tip = BallView.position + plannedDirection * length;
+                        Vector3 side = Vector3.Cross(Vector3.up, plannedDirection) * Mathf.Min(0.28f, length * 0.25f);
+                        Vector3 back = tip - plannedDirection * Mathf.Min(0.4f, length * 0.3f);
+                        aimLine.SetPosition(1, tip);
+                        aimLine.SetPosition(2, back + side);
+                        aimLine.SetPosition(3, tip);
+                        aimLine.SetPosition(4, back - side);
+                        hud.SetPower(Power, true);
+                    }
+                    // Releasing outside the camera plane still commits the last valid drag.
+                    if (GameInput.Released)
+                    {
+                        dragLine.enabled = aimLine.enabled = false;
+                        if (Power * engine.Settings.maxDragDistance < 0.12f) Phase = BallActionPhase.Aiming;
+                        else { Phase = BallActionPhase.Precision; Precision.Begin(engine.Settings.precisionTimeLimit, engine.Settings.precisionTargetSpeed); }
                     }
                 }
             }
@@ -135,14 +168,14 @@ namespace UltimaJugada
                 if (ReceiverView != null) ConsiderCircle(from, to, ReceiverView.position, engine.State.Affinity.ReceptionRadius, ActionOutcome.Success, ref first, ref outcome);
                 if (keeper != null && Ballistics.SegmentCircle(from - oldKeeper, to - keeper.position, Vector3.zero, 0.48f, out float keeperT) && keeperT < first)
                 { first = keeperT; outcome = ActionOutcome.Saved; }
-                if (kind == InterventionKind.Shot && Ballistics.GoalCrossing(from, to, out float goalT) && goalT < first)
+                if (kind != InterventionKind.Pass && Ballistics.GoalCrossing(from, to, out float goalT) && goalT < first)
                 { first = goalT; outcome = ActionOutcome.Success; }
                 // Boundary tests also take part in time-of-impact ordering, so an out-of-bounds pass cannot score a later reception.
                 ConsiderBoundary(from.x, to.x, FieldView.HalfWidth, ref first, ref outcome);
                 ConsiderBoundary(-from.x, -to.x, FieldView.HalfWidth, ref first, ref outcome);
                 ConsiderBoundary(from.z, to.z, FieldView.Top, ref first, ref outcome);
                 ConsiderBoundary(-from.z, -to.z, -FieldView.Bottom, ref first, ref outcome);
-                if (kind == InterventionKind.Shot && from.z < FieldView.GoalLine && to.z >= FieldView.GoalLine && !Ballistics.GoalCrossing(from, to, out _))
+                if (kind != InterventionKind.Pass && from.z < FieldView.GoalLine && to.z >= FieldView.GoalLine && !Ballistics.GoalCrossing(from, to, out _))
                 {
                     float missT = (FieldView.GoalLine - from.z) / (to.z - from.z);
                     if (missT < first) { first = missT; outcome = ActionOutcome.Missed; }
@@ -166,19 +199,24 @@ namespace UltimaJugada
         }
         private void UpdateHUD()
         {
+            if (Automated)
+            {
+                hud.SetActionInfo("REMATE DEL COMPAÑERO", "Tu pase creó esta ocasión.\nObserva la definición.", "Tu compañero remata al arco. El arquero intentará tapar: el vuelo del balón decide si es gol.");
+                return;
+            }
             string title = kind == InterventionKind.Pass ? "PASE\nBusca al compañero azul" : "DISPARO\nBusca un lado del arco";
             string status = Phase == BallActionPhase.Flight ? $"Precisión: {RawPrecision}%\nEfectiva: {EffectivePrecision:0}%\nResistencia: {initialStamina:0}/100" : $"Potencia: {Power * 100f:0}%\n{Mathf.CeilToInt(remaining)} s para apuntar";
             string instruction;
-            if (Phase == BallActionPhase.Precision) instruction = $"Haz clic en el CENTRO del balón de precisión. El borde reduce dirección y potencia. Tienes {engine.Settings.precisionTimeLimit:0.0} segundos.";
+            if (Phase == BallActionPhase.Precision) instruction = $"Sigue el objetivo en movimiento y haz clic en su CENTRO. Tienes {engine.Settings.precisionTimeLimit:0.0} segundos.";
             else if (Phase == BallActionPhase.Flight || Finished) instruction = "Balón en juego… La dirección, potencia, precisión y resistencia deciden la jugada.";
-            else instruction = "Clic sobre el balón blanco → arrastra hacia ATRÁS → suelta → clic de precisión. Línea verde = dirección y alcance.";
+            else instruction = "Clic sobre el balón → arrastra hacia ATRÁS → suelta → precisión. Flecha = dirección; barra = potencia.";
             if (kind == InterventionKind.Pass) status += $"\nRecepción: radio {engine.State.Affinity.ReceptionRadius:0.00}";
             hud.SetActionInfo(title, status, instruction);
         }
         private void Finish(ActionOutcome outcome)
         {
             if (Finished) return;
-            bool usedPrecision = Phase == BallActionPhase.Flight;
+            bool usedPrecision = Phase == BallActionPhase.Flight && !Automated;
             Phase = BallActionPhase.Finished;
             complete(new ActionResult(kind, outcome, usedPrecision ? RawPrecision : -1));
         }

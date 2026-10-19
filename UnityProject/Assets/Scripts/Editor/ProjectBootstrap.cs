@@ -95,7 +95,31 @@ namespace UltimaJugada.Editor
             }
         }
 
-        private static void PersistMaterials(GameObject root)
+        [MenuItem("Tools/Ultima Jugada/Refresh Match Presentation")]
+        public static void RefreshMatchPresentation()
+        {
+            if (EditorApplication.isPlayingOrWillChangePlaymode) return;
+            const string path = SceneFolder + "Match.unity";
+            var previous = SceneManager.GetActiveScene();
+            var scene = SceneManager.GetSceneByPath(path);
+            bool alreadyOpen = scene.IsValid() && scene.isLoaded;
+            if (!alreadyOpen) scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
+            SceneManager.SetActiveScene(scene);
+            var manager = scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<MatchSimulationManager>()).First();
+            var oldField = manager.GetComponentInChildren<FieldView>();
+            if (oldField != null) Object.DestroyImmediate(oldField.gameObject);
+            var field = FieldView.Build(manager.transform);
+            var serialized = new SerializedObject(manager);
+            serialized.FindProperty("field").objectReferenceValue = field;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            PersistMaterials(field.gameObject, true);
+            field.ReleaseSavedMaterialOwnership();
+            EditorSceneManager.SaveScene(scene, path);
+            if (!alreadyOpen) EditorSceneManager.CloseScene(scene, true);
+            if (previous.IsValid() && previous.isLoaded) SceneManager.SetActiveScene(previous);
+        }
+
+        private static void PersistMaterials(GameObject root, bool updateExisting = false)
         {
             foreach (var renderer in root.GetComponentsInChildren<Renderer>())
             {
@@ -104,8 +128,18 @@ namespace UltimaJugada.Editor
                 string path = "Assets/Materials/UltimaJugada/" + material.name + ".mat";
                 var existing = AssetDatabase.LoadAssetAtPath<Material>(path);
                 if (existing == null) AssetDatabase.CreateAsset(material, path);
-                else renderer.sharedMaterial = existing;
+                else
+                {
+                    if (updateExisting)
+                    {
+                        existing.shader = material.shader;
+                        existing.CopyPropertiesFromMaterial(material);
+                        EditorUtility.SetDirty(existing);
+                    }
+                    renderer.sharedMaterial = existing;
+                }
             }
+            AssetDatabase.SaveAssets();
         }
 
         private static void RepairMaterialNames()

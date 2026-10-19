@@ -13,15 +13,18 @@ namespace UltimaJugada
         private readonly Text timer;
         private readonly Texture2D texture;
         private readonly Sprite sprite;
+        private readonly RectTransform movementArea;
+        private float elapsed, motionSpeed, phaseX, phaseY;
 
         public PrecisionController(Canvas canvas)
         {
-            var panel = UIFactory.Panel(canvas.transform, "Precisión · balón", new Vector2(0.20f, 0.33f), new Vector2(0.60f, 0.72f), UIFactory.Surface);
+            var panel = UIFactory.Card(canvas.transform, "Precisión · balón", new Vector2(0.18f, 0.27f), new Vector2(0.68f, 0.79f));
             root = panel.gameObject;
-            UIFactory.Label(panel.transform, "PRECISIÓN", new Vector2(0.04f, 0.77f), new Vector2(0.96f, 0.98f), 32, UIFactory.Accent, TextAnchor.MiddleCenter);
+            UIFactory.Label(panel.transform, "PRECISIÓN · SIGUE EL BALÓN", new Vector2(0.04f, 0.82f), new Vector2(0.96f, 0.98f), 30, UIFactory.Accent, TextAnchor.MiddleCenter);
             timer = UIFactory.Label(panel.transform, "", new Vector2(0.04f, 0.01f), new Vector2(0.96f, 0.18f), 23, null, TextAnchor.MiddleCenter);
-            Target = UIFactory.Rect("Haz clic en el centro del balón", panel.transform, new Vector2(0.5f, 0.48f), new Vector2(0.5f, 0.48f));
-            Target.sizeDelta = new Vector2(210, 210);
+            movementArea = UIFactory.Rect("Área de movimiento", panel.transform, new Vector2(0.04f, 0.20f), new Vector2(0.96f, 0.82f));
+            Target = UIFactory.Rect("Haz clic en el centro del balón", movementArea, Vector2.one * 0.5f, Vector2.one * 0.5f);
+            Target.sizeDelta = new Vector2(180, 180);
             texture = CreateBallTarget();
             sprite = Sprite.Create(texture, new Rect(0, 0, 256, 256), new Vector2(0.5f, 0.5f));
             var image = Target.gameObject.AddComponent<Image>();
@@ -29,14 +32,18 @@ namespace UltimaJugada
             image.raycastTarget = false;
             root.SetActive(false);
         }
-        public void Begin(float timeLimit)
+        public void Begin(float timeLimit, float targetSpeed = 1.7f)
         {
             Remaining = timeLimit;
+            elapsed = 0f;
+            motionSpeed = Mathf.Max(0f, targetSpeed);
+            phaseX = Random.Range(0f, Mathf.PI * 2f);
+            phaseY = Random.Range(0f, Mathf.PI * 2f);
             Active = true;
             root.SetActive(true);
             root.transform.SetAsLastSibling();
-            Target.anchoredPosition = new Vector2(Random.Range(-135f, 135f), Random.Range(-12f, 12f));
             Canvas.ForceUpdateCanvases();
+            MoveTarget();
             UpdateTimer();
         }
         public int? Tick(float deltaTime)
@@ -49,7 +56,17 @@ namespace UltimaJugada
             if (GameInput.Clicked && RectTransformUtility.ScreenPointToLocalPointInRectangle(Target, GameInput.MousePosition, null, out var local)
                 && local.magnitude <= Target.rect.width * 0.5f)
                 return Complete(Ballistics.PrecisionScore(local, Target.rect.width * 0.5f));
+            // Score the position that was displayed when the click occurred, then animate the next frame.
+            elapsed += Mathf.Max(0f, deltaTime);
+            MoveTarget();
             return null;
+        }
+        private void MoveTarget()
+        {
+            Vector2 bounds = Vector2.Max(Vector2.zero, (movementArea.rect.size - Target.sizeDelta) * 0.5f - Vector2.one * 8f);
+            float t = elapsed * motionSpeed;
+            Target.anchoredPosition = new Vector2(Mathf.Sin(phaseX + t * 1.35f) * bounds.x * 0.82f,
+                Mathf.Sin(phaseY + t * 2.1f) * bounds.y * 0.9f);
         }
         private void UpdateTimer() => timer.text = $"Clic en el centro   ·   {Remaining:0.0} s";
         private int Complete(int score) { Active = false; root.SetActive(false); return score; }

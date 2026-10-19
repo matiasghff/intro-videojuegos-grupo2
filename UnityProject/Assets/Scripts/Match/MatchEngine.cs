@@ -6,17 +6,23 @@ namespace UltimaJugada
     /// <summary>Match rules independent of scenes, input, frame rate and presentation.</summary>
     public sealed class MatchEngine
     {
-        public static readonly int[] OpportunityMinutes = { 12, 26, 39, 57, 72, 84 };
+        public static readonly int[] OpportunityMinutes = { 6, 13, 21, 29, 36, 42, 50, 58, 65, 73, 80, 87 };
         private static readonly InterventionKind[] Kinds =
         {
+            InterventionKind.Dribble, InterventionKind.Pass, InterventionKind.Shot,
+            InterventionKind.Pass, InterventionKind.Dribble, InterventionKind.Shot,
             InterventionKind.Dribble, InterventionKind.Pass, InterventionKind.Shot,
             InterventionKind.Pass, InterventionKind.Dribble, InterventionKind.Shot
         };
         public GameState State { get; } = new GameState();
         public MatchSettings Settings { get; }
+        public float SimulationSpeed { get; private set; } = 1f;
+        public FollowUpKind PendingFollowUp { get; private set; }
+        public float TeammateAimX { get; private set; }
         public event Action<InterventionKind> InterventionStarted;
         public event Action Changed;
         private readonly MatchEventGenerator events;
+        private readonly System.Random attackRandom;
         private int nextOpportunity;
         private float nextEvent = 4f;
         private bool halftimePlayed;
@@ -25,13 +31,14 @@ namespace UltimaJugada
         {
             Settings = settings;
             events = new MatchEventGenerator(seed);
+            attackRandom = new System.Random(seed ^ 0x4F17);
             Log("¡Comienza el primer tiempo! Juegas para Ultima Jugada.");
         }
 
         public void Tick(float realSeconds)
         {
             if (State.Phase != MatchPhase.Simulating || realSeconds <= 0f) return;
-            float budget = realSeconds * Mathf.Max(0.05f, Settings.simulatedMinutesPerSecond);
+            float budget = realSeconds * SimulationSpeed * Mathf.Max(0.05f, Settings.simulatedMinutesPerSecond);
             while (budget > 0f && State.Phase == MatchPhase.Simulating)
             {
                 float opportunity = nextOpportunity < OpportunityMinutes.Length ? OpportunityMinutes[nextOpportunity] : 90f;
@@ -58,12 +65,7 @@ namespace UltimaJugada
                 }
                 else if (nextOpportunity < OpportunityMinutes.Length && State.Minute >= opportunity)
                 {
-                    State.CurrentIntervention = Kinds[nextOpportunity++];
-                    State.Phase = MatchPhase.Intervention;
-                    State.Possession = "Ultima Jugada";
-                    State.Status = "¡TU MOMENTO!";
-                    Log($"¡Oportunidad de {KindName(State.CurrentIntervention)}! El reloj se pausa.");
-                    InterventionStarted?.Invoke(State.CurrentIntervention);
+                    StartIntervention(Kinds[nextOpportunity++], false);
                 }
                 if (State.Minute >= nextEvent && State.Phase == MatchPhase.Simulating)
                 {
@@ -78,8 +80,9 @@ namespace UltimaJugada
         {
             if (State.Phase != MatchPhase.Intervention || State.CurrentIntervention != result.Kind) return false;
             State.Phase = MatchPhase.Resolution; // Guard before callbacks: exactly once.
-            State.Stats.Interventions++;
-            if (result.Precision >= 0)
+            PendingFollowUp = FollowUpKind.None;
+            if (result.Kind != InterventionKind.TeammateShot) State.Stats.Interventions++;
+            if (result.Precision >= 0 && result.Kind != InterventionKind.TeammateShot)
             {
                 State.Stats.PrecisionAttempts++;
                 State.Stats.PrecisionTotal += Mathf.Clamp(result.Precision, 0, 100);
@@ -96,7 +99,8 @@ namespace UltimaJugada
                         State.Stats.SuccessfulDribbles++;
                         State.Affinity.Change(3f);
                         State.Status = "¡REGATE EXITOSO!";
-                        Log("Superas a la defensa y generas una ocasión ofensiva. Afinidad +3.");
+                        PendingFollowUp = FollowUpKind.ChoosePassOrShot;
+                        Log("¡Superas a la defensa! Elige dar un pase o rematar ahora. Afinidad +3.");
                     }
                     else
                     {
@@ -111,6 +115,14 @@ namespace UltimaJugada
                     if (result.Succeeded) State.Stats.CompletedPasses++;
                     State.Status = result.Succeeded ? "¡PASE COMPLETADO!" : "PASE FALLIDO";
                     Log(result.Succeeded ? "Buena combinación con tu compañero. Afinidad +8." : $"{FailureText(result.Outcome)} Afinidad −4.");
+                    if (result.Succeeded && attackRandom.NextDouble() < Mathf.Clamp01(Settings.passFollowUpChance))
+                    {
+                        PendingFollowUp = attackRandom.NextDouble() < 0.55 ? FollowUpKind.PlayerShot : FollowUpKind.TeammateShot;
+                        TeammateAimX = attackRandom.NextDouble() < 0.5 ? 1.5f : -0.5f;
+                        Log(PendingFollowUp == FollowUpKind.PlayerShot
+                            ? "¡Pared! Tu compañero te devuelve el balón. Remata al arco."
+                            : "¡Asistencia! Tu compañero queda frente al arquero y prepara el remate.");
+                    }
                     break;
                 case InterventionKind.Shot:
                     if (result.Precision >= 0 || result.Outcome != ActionOutcome.Timeout) State.Stats.Shots++;
@@ -131,6 +143,24 @@ namespace UltimaJugada
                         Log($"{FailureText(result.Outcome)} El remate no termina en gol. Afinidad −2.");
                     }
                     break;
+                case InterventionKind.TeammateShot:
+                    State.Stats.TeammateShots++;
+                    State.Possession = "Deportivo Cordillera";
+                    if (result.Succeeded)
+                    {
+                        State.HomeGoals++;
+                        State.Stats.TeammateGoals++;
+                        State.Stats.Assists++;
+                        State.Affinity.Change(5f);
+                        State.Status = "¡GOL DEL COMPAÑERO!";
+                        Log($"¡Tu pase termina en gol! Asistencia para ti. {State.HomeGoals}–{State.AwayGoals}.");
+                    }
+                    else
+                    {
+                        State.Status = result.Outcome == ActionOutcome.Saved ? "¡EL ARQUERO ATAJA!" : "REMATE DEL COMPAÑERO";
+                        Log(result.Outcome == ActionOutcome.Saved ? "El arquero tapa el remate de tu compañero tras tu pase." : "Tu compañero no logra convertir la ocasión.");
+                    }
+                    break;
             }
             Changed?.Invoke();
             return true;
@@ -139,13 +169,50 @@ namespace UltimaJugada
         public void Continue()
         {
             if (State.Phase != MatchPhase.HalfTime && State.Phase != MatchPhase.Resolution) return;
+            if (PendingFollowUp == FollowUpKind.ChoosePassOrShot) return;
+            if (PendingFollowUp != FollowUpKind.None)
+            {
+                var kind = PendingFollowUp == FollowUpKind.PlayerShot ? InterventionKind.Shot : InterventionKind.TeammateShot;
+                PendingFollowUp = FollowUpKind.None;
+                StartIntervention(kind, true);
+                Changed?.Invoke();
+                return;
+            }
             if (State.Phase == MatchPhase.HalfTime) Log("¡Comienza el segundo tiempo!");
+            State.IsChainedIntervention = false;
             State.Phase = MatchPhase.Simulating;
             State.Status = "El partido continúa…";
             Changed?.Invoke();
         }
+        public void CycleSimulationSpeed()
+        {
+            SimulationSpeed = SimulationSpeed == 1f ? 1.5f : SimulationSpeed == 1.5f ? 2f : 1f;
+            Changed?.Invoke();
+        }
+
+        public bool ChooseFollowUp(InterventionKind kind)
+        {
+            if (State.Phase != MatchPhase.Resolution || PendingFollowUp != FollowUpKind.ChoosePassOrShot
+                || (kind != InterventionKind.Pass && kind != InterventionKind.Shot)) return false;
+            PendingFollowUp = FollowUpKind.None;
+            StartIntervention(kind, true);
+            Changed?.Invoke();
+            return true;
+        }
+
+        private void StartIntervention(InterventionKind kind, bool chained)
+        {
+            State.CurrentIntervention = kind;
+            State.IsChainedIntervention = chained;
+            State.Phase = MatchPhase.Intervention;
+            State.Possession = "Ultima Jugada";
+            State.Status = kind == InterventionKind.TeammateShot ? "REMATA TU COMPAÑERO" : chained ? "¡SIGUE LA JUGADA!" : "¡TU MOMENTO!";
+            Log(chained ? $"La jugada sigue con {KindName(kind)}. ¡El reloj continúa pausado!"
+                : $"¡Oportunidad de {KindName(kind)}! El reloj se pausa.");
+            InterventionStarted?.Invoke(kind);
+        }
         public void Log(string message) => State.Events.Add($"{MatchClock.Format(State.Minute)}  {message}");
-        public static string KindName(InterventionKind kind) => kind == InterventionKind.Dribble ? "regate" : kind == InterventionKind.Pass ? "pase" : "disparo";
+        public static string KindName(InterventionKind kind) => kind == InterventionKind.Dribble ? "regate" : kind == InterventionKind.Pass ? "pase" : kind == InterventionKind.TeammateShot ? "remate del compañero" : "disparo";
         private static string FailureText(ActionOutcome outcome)
         {
             switch (outcome)

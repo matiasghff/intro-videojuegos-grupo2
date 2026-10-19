@@ -1,10 +1,12 @@
 # Ultima Jugada - Grupo 2
 
-Versión alfa del proyecto de ICC0021 - Introducción al Desarrollo de Videojuegos. El juego combina un partido de 90 minutos simulados con intervenciones de regate, pase y tiro, además de afinidad con compañeros y fatiga.
+Versión alfa del proyecto de ICC0021 - Introducción al Desarrollo de Videojuegos. El juego combina un partido de 90 minutos simulados con doce oportunidades base, ataques encadenados de regate, pase y tiro, afinidad con compañeros y fatiga. La simulación permite velocidades x1, x1.5 y x2.
 
 ## Informe de la Entrega 4
 
 El informe actualizado está en **[docs/Entrega4_Informe.pdf](docs/Entrega4_Informe.pdf)**. Describe las funcionalidades implementadas, decisiones de diseño, problemas resueltos, pruebas realizadas y propuestas para la versión final. Conserva la portada y el formato del documento original.
+
+El PDF corresponde al checkpoint académico ya entregado. Los cambios posteriores de jugabilidad y gráficos están documentados en [docs/ACTUALIZACION_JUGABILIDAD.md](docs/ACTUALIZACION_JUGABILIDAD.md).
 
 `docs/backups/Entrega4_Informe_original.pdf` es el respaldo anterior a la edición. El PDF de la raíz de `docs/` es el que corresponde entregar.
 
@@ -17,6 +19,7 @@ intro-videojuegos-grupo2/
 ├── docs/
 │   ├── Entrega4_Informe.pdf      # Informe actualizado de la entrega
 │   ├── GUIA_EJECUCION.md         # Controles, configuración, build y exportación
+│   ├── ACTUALIZACION_JUGABILIDAD.md # Cambios posteriores al checkpoint entregado
 │   ├── ARCHITECTURE.md           # Organización de los sistemas y del código
 │   ├── FEATURE_CHECKLIST.md      # Los ocho requisitos y cómo comprobarlos
 │   ├── TEST_PLAN.md              # Pruebas ejecutadas y validación manual pendiente
@@ -50,7 +53,9 @@ Si faltan escenas después de importar el proyecto, ejecutar **Tools > Ultima Ju
 |---|---|
 | Moverse durante el regate | WASD o flechas |
 | Apuntar y elegir potencia | Clic en el balón y arrastrar hacia atrás |
-| Ejecutar con precisión | Soltar el arrastre y clicar el centro del balón circular antes de 2 segundos |
+| Ejecutar con precisión | Soltar el arrastre y clicar el centro del objetivo en movimiento antes de 2 segundos |
+| Acelerar la simulación | Botón x1 / x1.5 / x2 del marcador; los controles conservan su ritmo |
+| Continuar un regate exitoso | Elegir DAR UN PASE o TIRO AL ARCO inmediatamente |
 | Avanzar tras una jugada o el descanso | CONTINUAR o esperar el avance automático |
 | Reiniciar el partido | JUGAR OTRA VEZ en la pantalla final |
 
@@ -65,7 +70,7 @@ Las rutas de esta tabla son relativas a `UnityProject/Assets/Scripts/`.
 | `Gameplay/` | Movimiento, defensores, pelota, pase, tiro y precisión |
 | `Systems/` | Resistencia/fatiga y afinidad |
 | `UI/` | Menú, HUD y pantalla de resultado |
-| `Presentation/` | Cancha, portería y representación de los actores |
+| `Presentation/` | Estadio, iluminación, portería, balón y animación de futbolistas |
 | `Editor/` | Generación/reparación, compilación y exportación de la entrega |
 
 Las pruebas están en `UnityProject/Assets/Tests/`. Se pueden ejecutar desde **Window > General > Test Runner**. La evidencia y sus límites están explicados en [docs/TEST_PLAN.md](docs/TEST_PLAN.md).

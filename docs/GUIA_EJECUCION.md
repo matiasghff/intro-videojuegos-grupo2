@@ -17,9 +17,11 @@ Las tres escenas están incluidas en el proyecto. Si faltan tras una importació
 |---|---|
 | Regate | WASD o flechas; movimiento diagonal normalizado |
 | Pase / tiro | Clic sobre el balón blanco, mantener y arrastrar hacia atrás |
-| Dirección | El balón sale en sentido opuesto al arrastre; línea verde muestra dirección y alcance sin penalizaciones |
-| Potencia | Distancia de arrastre, hasta 4 unidades; porcentaje visible |
-| Precisión | Después de soltar, hacer clic en el centro del balón circular antes de 2 segundos |
+| Dirección | El balón sale en sentido opuesto al arrastre; flecha verde muestra dirección, con largo máximo de 2,4 unidades; no representa todo el alcance |
+| Potencia | Distancia de arrastre, hasta 4 unidades; flecha compacta, porcentaje y barra visible |
+| Precisión | Después de soltar, seguir el balón circular en movimiento y clicar su centro antes de 2 segundos |
+| Simulación | Botón del marcador para alternar x1 / x1.5 / x2; no acelera controles, precisión ni resoluciones |
+| Regate exitoso | Elegir DAR UN PASE o TIRO AL ARCO sin volver a la simulación |
 | Descanso / resultado de jugada | CONTINUAR o esperar el avance automático |
 | Resultado final | JUGAR OTRA VEZ / MENÚ / CERRAR |
 
@@ -29,17 +31,21 @@ No existe una tecla que conceda goles ni botones para decidir el resultado de la
 
 - Ultima Jugada juega de local frente a Deportivo Cordillera. Los compañeros son azules; los rivales, rojos; el balón, blanco; los objetivos, dorados.
 - Se simulan dos tiempos de 45 minutos. El reloj se detiene exactamente en cada intervención y durante el descanso. El relato y el marcador permanecen visibles.
-- Hay seis intervenciones garantizadas: **12′ regate, 26′ pase, 39′ tiro, 57′ pase, 72′ regate, 84′ tiro**.
+- Hay doce oportunidades garantizadas: **6′ regate, 13′ pase, 21′ tiro, 29′ pase, 36′ regate, 42′ tiro, 50′ regate, 58′ pase, 65′ tiro, 73′ pase, 80′ regate y 87′ tiro**. Los ataques encadenados se suman a este calendario.
+- Un regate exitoso abre inmediatamente la elección de pase o tiro. Un pase completado tiene un **90 %** de probabilidad de generar un remate inmediato: devolución al jugador (55 % de las continuaciones) o remate del compañero (45 %). El reloj permanece pausado.
+- El remate del compañero se representa con vuelo del balón y movimiento del arquero. Puede ser gol o atajada; los goles del compañero y las asistencias se contabilizan aparte de tus tiros y goles.
 - Los tres defensores del regate mantienen presión, anticipación y cobertura. Se gana cruzando la línea dorada; un contacto pierde la posesión y vuelve al partido.
 - El pase puede llegar al compañero, ser interceptado, desviarse o quedarse corto. El círculo dorado muestra el radio de recepción real.
 - El tiro se resuelve mediante trayectoria, desaceleración, contacto con un defensor o portero y cruce de la línea de gol entre los postes. El gol actualiza el marcador.
 - La **afinidad** comienza en 50. Un pase completado suma 8; fallarlo resta 4; un regate exitoso suma 3; un gol suma 4; un remate fallido resta 2. El radio de recepción crece de **0,55 a 1,20 unidades** según la afinidad.
-- La **resistencia** comienza en 100 y baja por minutos, carrera y acciones. El descanso recupera 10. Con resistencia ≤20 se activa fatiga extrema: velocidad de regate al **62%**, precisión efectiva **−22 puntos** y potencia al **82%**, además de la penalización por precisión. El regate de 72′ permite observar este estado incluso con poco esfuerzo previo.
+- La **resistencia** comienza en 100 y baja por minutos, carrera y acciones. El descanso recupera 10. Con resistencia ≤20 se activa fatiga extrema: velocidad de regate al **62%**, precisión efectiva **−22 puntos** y potencia al **82%**, además de la penalización por precisión. El regate de 80′ permite observar este estado incluso con poco esfuerzo previo.
 - La precisión efectiva genera un error angular de hasta 12° y una pérdida de velocidad de hasta 25%. El indicador distingue precisión del clic y precisión efectiva después de la fatiga.
 
-La simulación pura dura aproximadamente **160 segundos**, más intervenciones, descanso y resoluciones. El objetivo es 3–5 minutos por partido, según la rapidez del jugador. Los límites de tiempo impiden que una intervención quede bloqueada sin input.
+La simulación pura dura aproximadamente **160 / 107 / 80 segundos** a x1 / x1.5 / x2, más intervenciones, descanso y resoluciones. Las jugadas interactivas tienen límite de tiempo; tras superar un regate se espera la elección explícita de pase o tiro.
 
 ## Configuración y compilación
+
+La nueva presentación incluye tribunas, vallas, césped a franjas, dos porterías con red, luz de estadio y futbolistas con uniforme y animación. La escena existente también se actualiza visualmente al jugar. **Tools > Ultima Jugada > Refresh Match Presentation** vuelve a guardar solo la presentación de la cancha si se necesita reconstruirla en el Editor.
 
 Los parámetros de tiempo y pelota se editan en `Assets/Resources/MatchConfig.asset`. El proyecto usa URP 17.5.0, Input System 1.20.0 y uGUI 2.5.0, presentes en el manifest original; no se agregaron dependencias externas. El Canvas escala desde 1920×1080 en formato horizontal. Se usa la fuente integrada de Unity, sin importar recursos de TextMeshPro.
 
@@ -68,11 +74,11 @@ UNITY_EDITOR='/Applications/Unity/Hub/Editor/6000.5.10f1/Unity.app/Contents/MacO
 4. Probar la importación en un proyecto de la misma versión de Unity; conservar `ProjectSettings` y `Packages` junto al package. Las escenas de inicio se configuran con Generate or Repair Project.
 5. Subir el ZIP al Drive del grupo y entregar el informe PDF en el buzón indicado por el curso. Los archivos en `Builds/` son salidas locales ignoradas por Git.
 
-La entrega exige informe PDF, repositorio y Asset Package, presentación oral y feedback a otro grupo. El informe actualizado es [Entrega4_Informe.pdf](Entrega4_Informe.pdf); el borrador Markdown y el respaldo original no sustituyen ese PDF final. La pauta indica que el material de apoyo de la presentación debe realizarse **sin IA generativa**; ese material queda a cargo del equipo.
+La entrega exige informe PDF, repositorio y Asset Package, presentación oral y feedback a otro grupo. El informe del checkpoint entregado es [Entrega4_Informe.pdf](Entrega4_Informe.pdf); las mejoras posteriores se describen en [ACTUALIZACION_JUGABILIDAD.md](ACTUALIZACION_JUGABILIDAD.md). el borrador Markdown y el respaldo original no sustituyen ese PDF final. La pauta indica que el material de apoyo de la presentación debe realizarse **sin IA generativa**; ese material queda a cargo del equipo.
 
 ## Alcance y limitaciones
 
-Alfa arcade para teclado y mouse en macOS: un solo partido, dos equipos y seis oportunidades. La simulación entre jugadas se presenta como campo táctico y relato; no reproduce continuamente a los 22 futbolistas. Los compañeros receptores son estáticos y el portero tiene movimiento lateral sencillo. No hay torneos, economía, multijugador, guardado ni progresión entre partidos. La portería usa una comprobación geométrica de cruce, sin altura ni física aérea del balón. El arte es procedural y no incluye assets de terceros.
+Alfa arcade para teclado y mouse en macOS: un solo partido, dos equipos y doce oportunidades más continuaciones. La simulación entre jugadas se presenta con actores animados y relato; no reproduce continuamente a los 22 futbolistas. Los compañeros receptores son estáticos y el portero tiene movimiento lateral sencillo. No hay torneos, economía, multijugador, guardado ni progresión entre partidos. La portería usa una comprobación geométrica de cruce, sin altura ni física aérea del balón. El arte es procedural y no incluye assets de terceros.
 
 La expresión “resolución textural” de la pauta se interpreta operativamente como relato visible de acontecimientos y resultados, más césped y marcas con materiales sencillos. Es una decisión del equipo para esta implementación; no se atribuye una aclaración al profesor.
 

@@ -20,15 +20,19 @@ No agregar `-quit` a las llamadas con `-runTests`: el runner termina al completa
 
 ## Cobertura automatizada
 
-`MatchRulesTests` verifica inicio limpio; partido completo con tres seeds; seis oportunidades y tres tipos; minutos monótonos; pausa de reloj en intervención/resolución; descanso único; final inmutable; resolución única y tipo correcto; estadísticas; goles reales en el estado; afinidad; fatiga extrema alcanzable; penalizaciones y límites; precisión radial; error angular y pérdida de potencia; desviación a ambos lados; desaceleración independiente del frame; colisión continua; límites del arco; movimiento diagonal y roles defensivos; victoria, empate y derrota.
+`MatchRulesTests` verifica inicio limpio; partido completo con tres seeds; doce oportunidades base y tres tipos jugables; minutos monótonos; pausa de reloj en intervención/resolución; descanso único; final inmutable; resolución única y tipo correcto; estadísticas; goles reales en el estado; afinidad; fatiga extrema alcanzable; penalizaciones y límites; precisión radial; error angular y pérdida de potencia; desviación a ambos lados; desaceleración independiente del frame; colisión continua; límites del arco; movimiento diagonal y roles defensivos; victoria, empate y derrota.
 
 `GameplayIntegrationTests` usa dispositivos del Input System y los controladores de producción. Comprueba selección del balón por raycast, arrastre y espera de precisión; clic central; pase completado, corto e interceptado; tiro convertido, desviado y atajado; clic fuera del círculo y timeout de precisión; regate superando defensores y regate interceptado; lectura real de WASD/flechas; navegación desde MainMenu y dos partidos completos consecutivos pasando por MatchResult, con reinicio del estado.
 
 La prueba de flujo acelera el motor mediante segundos inyectados y resuelve las oportunidades por los timeouts de los controladores reales. Las pruebas específicas de jugada ejecutan input de mouse y trayectorias. Esto separa la cobertura funcional del ensayo humano de dificultad y duración.
 
-`VisualSmokeTests` renderiza el campo y el Canvas reales a texturas de 1920×1080 para revisar menú, regate, arrastre, precisión y resultado. El modo batch no presenta una Game View, por lo que estas son capturas de render fuera de pantalla, no capturas de una partida manual. Los eventos de Input System de un `UnityTest` se dejan procesar en el siguiente fotograma antes de leerlos.
+`VisualSmokeTests` renderiza el campo y el Canvas reales a texturas de 1920×1080 para revisar menú, regate, arrastre, precisión y resultado, más la elección tras regate y la secuencia completa de pase, remate y gol del compañero. El modo batch no presenta una Game View, por lo que estas son capturas de render fuera de pantalla, no capturas de una partida manual. Los eventos de Input System de un `UnityTest` se dejan procesar en el siguiente fotograma antes de leerlos.
 
-## Evidencia de esta sesión
+## Validación posterior al checkpoint
+
+La actualización de velocidad, ataques encadenados, objetivo móvil, flecha y gráficos se valida por separado en [ACTUALIZACION_JUGABILIDAD.md](ACTUALIZACION_JUGABILIDAD.md). Los XML y capturas nuevos se guardan en `validation/gameplay-update/`; la evidencia de la raíz de `validation/` se conserva como registro del checkpoint.
+
+## Evidencia del checkpoint entregado
 
 Ejecutado con Unity **6000.5.10f1**, el **19 de octubre de 2026**, en una copia aislada del proyecto para conservar la sesión del Editor abierta. La copia final usa los Assets y GUID generados en el proyecto real.
 
@@ -55,17 +59,19 @@ Después de detectar los avisos de `Cesped claro` y `Cesped oscuro`, se corrigi�
 
 1. Abrir MainMenu, presionar Play y comprobar título, controles y botones. SALIR debe detener Play; volver a iniciarlo.
 2. JUGAR PARTIDO: comprobar 0′, 0–0, resistencia inicial y afinidad 50. Ver avanzar minutos y relato. Un gol del relato debe cambiar el marcador.
-3. A 12′, comprobar que el reloj se congela. Moverse con cada dirección y diagonal. Intentar esquivar y cruzar la línea; en otra partida dejarse interceptar. Ambos resultados deben volver al mismo minuto.
-4. A 26′, seleccionar el balón, arrastrar hacia atrás y observar porcentaje, línea amarilla y trayectoria verde. Soltar debe abrir precisión sin lanzar aún. Clicar el centro y apuntar al compañero para completar un pase; comprobar afinidad +8.
+3. A 6′, comprobar que el reloj se congela. Moverse con cada dirección y diagonal. Intentar esquivar y cruzar la línea; en otra partida dejarse interceptar. El regate fallido vuelve a simular. Al superarlo debe aparecer la elección inmediata de pase o tiro en el mismo minuto; probar ambas opciones.
+4. A 13′, seleccionar el balón, arrastrar hacia atrás y observar porcentaje, indicador amarillo y flecha verde limitada; arrastrar mucho más lejos no debe agrandarlos más allá de 2,4 unidades. Soltar debe abrir el objetivo móvil de precisión sin lanzar aún. Seguirlo y clicar el centro y apuntar al compañero para completar un pase; comprobar afinidad +8. Normalmente el ataque debe continuar de inmediato con un tiro del jugador o de su compañero, sin adelantar minutos.
 5. Repetir apuntando al rival, usando poca potencia o clicando cerca del borde para comprobar intercepción, pase corto y desviación. Dejar transcurrir los 2 segundos de precisión debe producir cero puntos.
-6. A 39′, intentar un remate potente hacia un costado dentro del arco. El balón debe cruzar su línea y el marcador subir en uno. Un tiro al centro puede ser atajado; fuera de los postes debe fallar.
+6. A 21′, intentar un remate potente hacia un costado dentro del arco. El balón debe cruzar su línea y el marcador subir en uno. Un tiro al centro puede ser atajado; fuera de los postes debe fallar.
 7. A 45′, comprobar descanso, resistencia +10 y comienzo del segundo tiempo. Probar tanto CONTINUAR como el avance automático.
-8. A 57′, comparar el círculo de recepción con el pase anterior tras subir/bajar afinidad.
-9. A 72′, comprobar FATIGA EXTREMA y desplazamiento más lento. A 84′, comparar precisión efectiva con la del clic y potencia reducida. La geometría permite llegar al arco con suficiente potencia incluso cansado.
+8. A 58′, comparar el círculo de recepción con el pase anterior tras subir/bajar afinidad.
+9. A 80′, comprobar FATIGA EXTREMA y desplazamiento más lento. A 87′, comparar precisión efectiva con la del clic y potencia reducida. La geometría permite llegar al arco con suficiente potencia incluso cansado.
 10. Llegar a 90′ sin nuevas intervenciones. Comprobar resultado, goles del jugador, intentos, pases/regates, intercepciones, afinidad y resistencia finales.
-11. JUGAR OTRA VEZ: comprobar estado limpio y seis oportunidades disponibles otra vez. Repetir al menos dos veces sin detener Play.
+11. JUGAR OTRA VEZ: comprobar estado limpio y doce oportunidades disponibles otra vez. Repetir al menos dos veces sin detener Play.
 12. Compilar macOS y abrir la aplicación. Repetir el flujo y usar CERRAR; debe terminar el proceso.
-13. Comprobar legibilidad en horizontal a 1920×1080 y 1280×720, clic sobre el balón y ausencia de texto superpuesto.
+13. Usar el botón del marcador para alternar x1, x1.5 y x2. Los minutos deben acelerarse; la precisión debe conservar sus 2 segundos y el regate su velocidad.
+14. Completar pases hasta observar un remate del compañero, gol o atajada. Un gol debe sumar asistencia y gol de compañero, sin aumentar tus goles ni tus tiros.
+15. Comprobar legibilidad en horizontal a 1920×1080 y 1280×720, clic sobre el balón y ausencia de texto superpuesto.
 
 ## Límites de la evidencia
 

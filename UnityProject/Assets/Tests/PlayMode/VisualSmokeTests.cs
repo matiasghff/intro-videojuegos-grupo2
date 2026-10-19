@@ -12,6 +12,75 @@ namespace UltimaJugada.Tests
     public sealed class VisualSmokeTests : InputTestFixture
     {
         [UnityTest]
+        public IEnumerator CaptureSuccessfulDribblePassAndTeammateFinish()
+        {
+            var mouse = InputSystem.AddDevice<Mouse>();
+            InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
+            var session = GameManager.Instance;
+            int chosenSeed = -1;
+            for (int seed = 0; seed < 200; seed++)
+            {
+                var probe = new MatchEngine(session.Settings, seed);
+                probe.Tick(10000f);
+                probe.Resolve(new ActionResult(InterventionKind.Dribble, ActionOutcome.Success));
+                probe.ChooseFollowUp(InterventionKind.Pass);
+                probe.Resolve(new ActionResult(InterventionKind.Pass, ActionOutcome.Success, 100));
+                if (probe.PendingFollowUp == FollowUpKind.TeammateShot && probe.TeammateAimX > 0f) { chosenSeed = seed; break; }
+            }
+            Assert.That(chosenSeed, Is.GreaterThanOrEqualTo(0));
+            session.NewMatch(chosenSeed);
+            yield return SceneManager.LoadSceneAsync("Match");
+            yield return null;
+            var manager = Object.FindAnyObjectByType<MatchSimulationManager>();
+            manager.enabled = false;
+            var engine = manager.Engine;
+            engine.Tick(10000f);
+            var dribble = (DribbleController)manager.CurrentAction;
+            var route = new[] { new Vector2(3.29f, -3.81f), new Vector2(3.09f, -0.59f), new Vector2(0.38f, 4f), new Vector2(-0.35f, 7.5f) };
+            int waypoint = 0;
+            for (int i = 0; i < 960 && !dribble.Finished; i++)
+            {
+                var position = new Vector2(dribble.Player.Position.x, dribble.Player.Position.z);
+                if (Vector2.Distance(position, route[waypoint]) < 0.15f && waypoint < route.Length - 1) waypoint++;
+                dribble.TickInput((route[waypoint] - position).normalized, 1f / 60f);
+            }
+            Assert.That(engine.PendingFollowUp, Is.EqualTo(FollowUpKind.ChoosePassOrShot));
+            yield return Capture("06-dribble-choice");
+            GameObject.Find("DAR UN PASE").GetComponent<Button>().onClick.Invoke();
+            var pass = (PassShotController)manager.CurrentAction;
+            var field = manager.GetComponentInChildren<FieldView>();
+            Physics.SyncTransforms();
+            Vector3 start = pass.BallView.position;
+            Set(mouse.position, (Vector2)field.FieldCamera.WorldToScreenPoint(start));
+            Press(mouse.leftButton);
+            yield return null;
+            pass.Tick(0.01f);
+            Set(mouse.position, (Vector2)field.FieldCamera.WorldToScreenPoint(start - (pass.ReceiverView.position - start).normalized * 3.4f));
+            yield return null;
+            pass.Tick(0.01f);
+            Release(mouse.leftButton);
+            yield return null;
+            pass.Tick(0.01f);
+            Assert.That(pass.Phase, Is.EqualTo(BallActionPhase.Precision));
+            Set(mouse.position, RectTransformUtility.WorldToScreenPoint(null, pass.Precision.Target.position));
+            Press(mouse.leftButton);
+            yield return null;
+            pass.Tick(0.01f);
+            Release(mouse.leftButton);
+            for (int i = 0; i < 400 && !pass.Finished; i++) pass.Tick(1f / 60f);
+            Assert.That(engine.PendingFollowUp, Is.EqualTo(FollowUpKind.TeammateShot));
+            manager.Continue();
+            for (int i = 0; i < 4; i++) manager.CurrentAction.Tick(0.25f);
+            manager.CurrentAction.Tick(0.1f);
+            yield return Capture("07-teammate-shot");
+            for (int i = 0; i < 200 && !manager.CurrentAction.Finished; i++) manager.CurrentAction.Tick(1f / 60f);
+            Assert.That(engine.State.Stats.Assists, Is.EqualTo(1));
+            Assert.That(engine.State.Minute, Is.EqualTo(6f));
+            yield return Capture("08-teammate-goal");
+            yield return SceneManager.LoadSceneAsync("MainMenu");
+        }
+
+        [UnityTest]
         public IEnumerator CaptureRenderedMenuFieldPrecisionAndResult()
         {
             var mouse = InputSystem.AddDevice<Mouse>();
