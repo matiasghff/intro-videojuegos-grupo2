@@ -1,0 +1,6 @@
+{
+  "name": "UltimaJugada.Runtime",
+  "rootNamespace": "UltimaJugada",
+  "references": ["Unity.InputSystem", "UnityEngine.UI"],
+  "autoReferenced": true
+}

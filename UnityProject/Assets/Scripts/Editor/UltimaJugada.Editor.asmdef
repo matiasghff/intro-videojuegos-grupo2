@@ -1,0 +1,7 @@
+{
+  "name": "UltimaJugada.Editor",
+  "rootNamespace": "UltimaJugada.Editor",
+  "references": ["UltimaJugada.Runtime", "Unity.InputSystem", "UnityEngine.UI"],
+  "includePlatforms": ["Editor"],
+  "autoReferenced": true
+}

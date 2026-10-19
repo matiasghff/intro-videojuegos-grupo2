@@ -1,0 +1,7 @@
+{
+  "name": "UltimaJugada.EditModeTests",
+  "references": ["UltimaJugada.Runtime", "UltimaJugada.Editor"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

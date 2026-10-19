@@ -1,0 +1,83 @@
+{
+  "unityVersion": "6000.5.10f1",
+  "date": "2026-10-19",
+  "tests": {
+    "editmode": {
+      "total": "30",
+      "passed": "30",
+      "failed": "0",
+      "skipped": "0",
+      "duration": "0.9081114"
+    },
+    "playmode": {
+      "total": "12",
+      "passed": "12",
+      "failed": "0",
+      "skipped": "0",
+      "duration": "2.5049259"
+    }
+  },
+  "macOS": {
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "executable": "Ultima Jugada",
+    "bundleIdentifier": "cl.uandes.grupo2.ultimajugada",
+    "signatureVerification": "passed",
+    "buildBytes": 119727672
+  },
+  "artifacts": {
+    "UnityProject/Builds/UltimaJugada-Entrega4.zip": {
+      "bytes": 426050,
+      "sha256": "e64d49813e3688f8cc6114304271e5b409e37626aa5159a77bdca0c3e5c1a9e3"
+    },
+    "UnityProject/Builds/Entrega4/UltimaJugada.unitypackage": {
+      "bytes": 137538,
+      "sha256": "c2a8fd77e610e2b3428944f667f2a3dc6f86ab94efa9a7bfad67f52db7c9808b"
+    },
+    "UnityProject/Builds/UltimaJugada-macOS.zip": {
+      "bytes": 47313259,
+      "sha256": "3bbbef111df65fa9ea2770134dbfeb0513a7ac3b501d9128be67afe165cb6e34"
+    },
+    "docs/Entrega4_Informe.pdf": {
+      "bytes": 264011,
+      "sha256": "6b61a1492565bea892611e398431890dea883a697f001a0422c1771fb6f9388c"
+    }
+  },
+  "zipIntegrity": "passed",
+  "zipRequiredFiles": {
+    "UltimaJugada.unitypackage": true,
+    "ProjectSettings/EditorBuildSettings.asset": true,
+    "Packages/manifest.json": true,
+    "docs/Entrega4_Informe.pdf": true,
+    "LEEME_ENTREGA.md": true
+  },
+  "packageScenes": {
+    "MainMenu": true,
+    "Match": true,
+    "MatchResult": true
+  },
+  "packagePathsAreASCII": true,
+  "sourceAssetPathsAreASCII": true,
+  "nativeStartup": {
+    "status": "started_and_stopped_by_test",
+    "exitCode": 0,
+    "rendering": "Metal",
+    "runtimeFailures": [],
+    "note": "Terminado por SIGTERM desde el test; no verifica el botón CERRAR."
+  },
+  "materialNameRepair": {
+    "editModePassed": 30,
+    "sceneReferencesPreserved": true,
+    "guidsPreserved": true,
+    "cleanExportHasNoNameWarnings": true,
+    "nativeBuildRebuilt": true
+  },
+  "deliveryRefresh": {
+    "reportIncludedAndMatchesSource": true,
+    "currentScriptsVerified": 32,
+    "macOSZipSignatureVerifiedAfterExtraction": true,
+    "readmeUpdated": true
+  }
+}

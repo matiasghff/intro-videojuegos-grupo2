@@ -1,0 +1,8 @@
+﻿<Solution>
+  <Project Path="UltimaJugada.PlayModeTests.csproj" />
+  <Project Path="UltimaJugada.Runtime.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="UltimaJugada.EditModeTests.csproj" />
+  <Project Path="UltimaJugada.Editor.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
+</Solution>

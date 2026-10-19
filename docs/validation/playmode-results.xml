@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="12" result="Passed" total="12" passed="12" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-19 11:57:01Z" end-time="2026-10-19 11:57:03Z" duration="2.5049259">
+  <test-suite type="TestSuite" id="1021" name="Ultima Jugada" fullname="Ultima Jugada" runstate="Runnable" testcasecount="12" result="Passed" start-time="2026-10-19 11:57:01Z" end-time="2026-10-19 11:57:03Z" duration="2.504926" total="12" passed="12" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1015" name="UltimaJugada.PlayModeTests.dll" fullname="/private/var/folders/zp/y7nl3w8x7b754hnt8y1z_7s00000gn/T/ultima-jugada-validation-fx0yn308/Library/ScriptAssemblies/UltimaJugada.PlayModeTests.dll" runstate="Runnable" testcasecount="12" result="Passed" start-time="2026-10-19 11:57:01Z" end-time="2026-10-19 11:57:03Z" duration="2.500910" total="12" passed="12" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="73431" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1016" name="UltimaJugada" fullname="UltimaJugada" runstate="Runnable" testcasecount="12" result="Passed" start-time="2026-10-19 11:57:01Z" end-time="2026-10-19 11:57:03Z" duration="2.500561" total="12" passed="12" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1017" name="Tests" fullname="UltimaJugada.Tests" runstate="Runnable" testcasecount="12" result="Passed" start-time="2026-10-19 11:57:01Z" end-time="2026-10-19 11:57:03Z" duration="2.500223" total="12" passed="12" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="GameplayIntegrationTests" fullname="UltimaJugada.Tests.GameplayIntegrationTests" classname="UltimaJugada.Tests.GameplayIntegrationTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-19 11:57:01Z" end-time="2026-10-19 11:57:02Z" duration="1.341955" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1002" name="ActualMouseDragPrecisionAndFlightCompleteAPass" fullname="UltimaJugada.Tests.GameplayIntegrationTests.ActualMouseDragPrecisionAndFlightCompleteAPass" methodname="ActualMouseDragPrecisionAndFlightCompleteAPass" classname="UltimaJugada.Tests.GameplayIntegrationTests" runstate="Runnable" seed="1107409396" result="Passed" start-time="2026-10-19 11:57:01Z" end-time="2026-10-19 11:57:01Z" duration="0.137492" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1003" name="ActualPassCanBeIntercepted" fullname="UltimaJugada.Tests.GameplayIntegrationTests.ActualPassCanBeIntercepted" methodname="ActualPassCanBeIntercepted" classname="UltimaJugada.Tests.GameplayIntegrationTests" runstate="Runnable" seed="164985691" result="Passed" start-time="2026-10-19 11:57:01Z" end-time="2026-10-19 11:57:01Z" duration="0.010531" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1005" name="ActualShotCrossesGoalLineAndUpdatesMatchScore" fullname="UltimaJugada.Tests.GameplayIntegrationTests.ActualShotCrossesGoalLineAndUpdatesMatchScore" methodname="ActualShotCrossesGoalLineAndUpdatesMatchScore" classname="UltimaJugada.Tests.GameplayIntegrationTests" runstate="Runnable" seed="764163861" result="Passed" start-time="2026-10-19 11:57:01Z" end-time="2026-10-19 11:57:01Z" duration="0.010924" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1006" name="ActualShotOutsidePostsMisses" fullname="UltimaJugada.Tests.GameplayIntegrationTests.ActualShotOutsidePostsMisses" methodname="ActualShotOutsidePostsMisses" classname="UltimaJugada.Tests.GameplayIntegrationTests" runstate="Runnable" seed="888792539" result="Passed" start-time="2026-10-19 11:57:01Z" end-time="2026-10-19 11:57:01Z" duration="0.010002" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1007" name="CenterShotIsSavedByKeeper" fullname="UltimaJugada.Tests.GameplayIntegrationTests.CenterShotIsSavedByKeeper" methodname="CenterShotIsSavedByKeeper" classname="UltimaJugada.Tests.GameplayIntegrationTests" runstate="Runnable" seed="1458626546" result="Passed" start-time="2026-10-19 11:57:01Z" end-time="2026-10-19 11:57:01Z" duration="0.009765" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1010" name="DribbleCanBeatAllThreeFixedDefenders" fullname="UltimaJugada.Tests.GameplayIntegrationTests.DribbleCanBeatAllThreeFixedDefenders" methodname="DribbleCanBeatAllThreeFixedDefenders" classname="UltimaJugada.Tests.GameplayIntegrationTests" runstate="Runnable" seed="1287672020" result="Passed" start-time="2026-10-19 11:57:01Z" end-time="2026-10-19 11:57:01Z" duration="0.006743" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1011" name="DribbleCanBeInterceptedWithoutEndingMatch" fullname="UltimaJugada.Tests.GameplayIntegrationTests.DribbleCanBeInterceptedWithoutEndingMatch" methodname="DribbleCanBeInterceptedWithoutEndingMatch" classname="UltimaJugada.Tests.GameplayIntegrationTests" runstate="Runnable" seed="1150913508" result="Passed" start-time="2026-10-19 11:57:01Z" end-time="2026-10-19 11:57:01Z" duration="0.004949" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1004" name="LowPowerPassStopsShort" fullname="UltimaJugada.Tests.GameplayIntegrationTests.LowPowerPassStopsShort" methodname="LowPowerPassStopsShort" classname="UltimaJugada.Tests.GameplayIntegrationTests" runstate="Runnable" seed="1149390715" result="Passed" start-time="2026-10-19 11:57:01Z" end-time="2026-10-19 11:57:01Z" duration="0.009718" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1008" name="PrecisionTimeoutLaunchesWithZeroAndOutsideCircleClickIsIgnored" fullname="UltimaJugada.Tests.GameplayIntegrationTests.PrecisionTimeoutLaunchesWithZeroAndOutsideCircleClickIsIgnored" methodname="PrecisionTimeoutLaunchesWithZeroAndOutsideCircleClickIsIgnored" classname="UltimaJugada.Tests.GameplayIntegrationTests" runstate="Runnable" seed="2087626466" result="Passed" start-time="2026-10-19 11:57:01Z" end-time="2026-10-19 11:57:01Z" duration="0.009615" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1012" name="SceneFlowPlaysTwoCompleteMatchesAndResetsEverything" fullname="UltimaJugada.Tests.GameplayIntegrationTests.SceneFlowPlaysTwoCompleteMatchesAndResetsEverything" methodname="SceneFlowPlaysTwoCompleteMatchesAndResetsEverything" classname="UltimaJugada.Tests.GameplayIntegrationTests" runstate="Runnable" seed="1117051195" result="Passed" start-time="2026-10-19 11:57:01Z" end-time="2026-10-19 11:57:02Z" duration="1.121657" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1009" name="WASDAndArrowsUseTheNewInputSystemAndNormalizeDiagonal" fullname="UltimaJugada.Tests.GameplayIntegrationTests.WASDAndArrowsUseTheNewInputSystemAndNormalizeDiagonal" methodname="WASDAndArrowsUseTheNewInputSystemAndNormalizeDiagonal" classname="UltimaJugada.Tests.GameplayIntegrationTests" runstate="Runnable" seed="2105106171" result="Passed" start-time="2026-10-19 11:57:02Z" end-time="2026-10-19 11:57:02Z" duration="0.003060" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1013" name="VisualSmokeTests" fullname="UltimaJugada.Tests.VisualSmokeTests" classname="UltimaJugada.Tests.VisualSmokeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-19 11:57:02Z" end-time="2026-10-19 11:57:03Z" duration="1.157523" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1014" name="CaptureRenderedMenuFieldPrecisionAndResult" fullname="UltimaJugada.Tests.VisualSmokeTests.CaptureRenderedMenuFieldPrecisionAndResult" methodname="CaptureRenderedMenuFieldPrecisionAndResult" classname="UltimaJugada.Tests.VisualSmokeTests" runstate="Runnable" seed="1884092342" result="Passed" start-time="2026-10-19 11:57:02Z" end-time="2026-10-19 11:57:03Z" duration="1.139429" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: /Users/matiasghf/Library/Application Support/Grupo 2 - UANDES/Ultima Jugada/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -1,0 +1,6 @@
+{
+  "name": "UltimaJugada.PlayModeTests",
+  "references": ["UltimaJugada.Runtime", "Unity.InputSystem", "Unity.InputSystem.TestFramework", "UnityEngine.UI"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

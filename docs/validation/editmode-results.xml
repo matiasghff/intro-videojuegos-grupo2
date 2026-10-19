@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="30" result="Passed" total="30" passed="30" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:31Z" duration="0.9081114">
+  <test-suite type="TestSuite" id="1000" name="Ultima Jugada" fullname="Ultima Jugada" runstate="Runnable" testcasecount="30" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:31Z" duration="0.908111" total="30" passed="30" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1038" name="UltimaJugada.EditModeTests.dll" fullname="/private/var/folders/zp/y7nl3w8x7b754hnt8y1z_7s00000gn/T/ultima-jugada-material-validation-o8ysway6/Library/ScriptAssemblies/UltimaJugada.EditModeTests.dll" runstate="Runnable" testcasecount="30" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:31Z" duration="0.904345" total="30" passed="30" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="77312" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1039" name="UltimaJugada" fullname="UltimaJugada" runstate="Runnable" testcasecount="30" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:31Z" duration="0.903983" total="30" passed="30" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1040" name="Tests" fullname="UltimaJugada.Tests" runstate="Runnable" testcasecount="30" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:31Z" duration="0.903654" total="30" passed="30" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="MatchRulesTests" fullname="UltimaJugada.Tests.MatchRulesTests" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" testcasecount="27" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.028424" total="27" passed="27" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1013" name="AffinityChangesActualReceptionRadius" fullname="UltimaJugada.Tests.MatchRulesTests.AffinityChangesActualReceptionRadius" methodname="AffinityChangesActualReceptionRadius" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="1823949276" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.008274" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1008" name="AimingTimeoutDoesNotCountAsAnExecutedPassOrShot" fullname="UltimaJugada.Tests.MatchRulesTests.AimingTimeoutDoesNotCountAsAnExecutedPassOrShot" methodname="AimingTimeoutDoesNotCountAsAnExecutedPassOrShot" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="1561625414" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.002647" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1024" name="BallTravelIsFrameRateIndependentAndNeverReverses" fullname="UltimaJugada.Tests.MatchRulesTests.BallTravelIsFrameRateIndependentAndNeverReverses" methodname="BallTravelIsFrameRateIndependentAndNeverReverses" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="1247459289" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000378" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1027" name="DiagonalMovementIsNormalizedAndFatigueChangesDistance" fullname="UltimaJugada.Tests.MatchRulesTests.DiagonalMovementIsNormalizedAndFatigueChangesDistance" methodname="DiagonalMovementIsNormalizedAndFatigueChangesDistance" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="1005354730" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.001591" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1011" name="ExtremeFatigueIsGuaranteedByLateDribbleEvenWithNoRunning" fullname="UltimaJugada.Tests.MatchRulesTests.ExtremeFatigueIsGuaranteedByLateDribbleEvenWithNoRunning" methodname="ExtremeFatigueIsGuaranteedByLateDribbleEvenWithNoRunning" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="1384852482" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000208" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1012" name="ExtremeFatigueReducesSpeedPrecisionAndPowerAndClamps" fullname="UltimaJugada.Tests.MatchRulesTests.ExtremeFatigueReducesSpeedPrecisionAndPowerAndClamps" methodname="ExtremeFatigueReducesSpeedPrecisionAndPowerAndClamps" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="334384357" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000341" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1010" name="FailedActionsChangeStatsAffinityAndPossession" fullname="UltimaJugada.Tests.MatchRulesTests.FailedActionsChangeStatsAffinityAndPossession" methodname="FailedActionsChangeStatsAffinityAndPossession" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="1741817648" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000369" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1028" name="FixedRolesProduceDifferentDefensiveTargets" fullname="UltimaJugada.Tests.MatchRulesTests.FixedRolesProduceDifferentDefensiveTargets" methodname="FixedRolesProduceDifferentDefensiveTargets" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="1638096375" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000870" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1026" name="GoalRequiresCrossingBetweenThePosts" fullname="UltimaJugada.Tests.MatchRulesTests.GoalRequiresCrossingBetweenThePosts" methodname="GoalRequiresCrossingBetweenThePosts" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="779050013" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000208" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1007" name="InvalidKindCannotResolveOrChangePossession" fullname="UltimaJugada.Tests.MatchRulesTests.InvalidKindCannotResolveOrChangePossession" methodname="InvalidKindCannotResolveOrChangePossession" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="1057934492" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000199" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1009" name="MaximumShotCanStillReachGoalUnderExtremeFatigue" fullname="UltimaJugada.Tests.MatchRulesTests.MaximumShotCanStillReachGoalUnderExtremeFatigue" methodname="MaximumShotCanStillReachGoalUnderExtremeFatigue" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="1543227791" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000322" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1002" name="NewMatchStartsClean" fullname="UltimaJugada.Tests.MatchRulesTests.NewMatchStartsClean" methodname="NewMatchStartsClean" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="1373180767" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000144" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1023" name="PoorPrecisionCanDeviateToEitherSide" fullname="UltimaJugada.Tests.MatchRulesTests.PoorPrecisionCanDeviateToEitherSide" methodname="PoorPrecisionCanDeviateToEitherSide" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="457722423" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000109" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1022" name="PrecisionChangesBothDirectionAndSpeed" fullname="UltimaJugada.Tests.MatchRulesTests.PrecisionChangesBothDirectionAndSpeed" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.001444" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1019" name="PrecisionChangesBothDirectionAndSpeed(100.0f,0.0f,12.0f)" fullname="UltimaJugada.Tests.MatchRulesTests.PrecisionChangesBothDirectionAndSpeed(100.0f,0.0f,12.0f)" methodname="PrecisionChangesBothDirectionAndSpeed" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="1027911992" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000240" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1020" name="PrecisionChangesBothDirectionAndSpeed(50.0f,6.0f,10.5f)" fullname="UltimaJugada.Tests.MatchRulesTests.PrecisionChangesBothDirectionAndSpeed(50.0f,6.0f,10.5f)" methodname="PrecisionChangesBothDirectionAndSpeed" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="975577256" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000039" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1021" name="PrecisionChangesBothDirectionAndSpeed(0.0f,12.0f,9.0f)" fullname="UltimaJugada.Tests.MatchRulesTests.PrecisionChangesBothDirectionAndSpeed(0.0f,12.0f,9.0f)" methodname="PrecisionChangesBothDirectionAndSpeed" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="990739400" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000038" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="ParameterizedMethod" id="1018" name="PrecisionDependsOnDistanceToCenter" fullname="UltimaJugada.Tests.MatchRulesTests.PrecisionDependsOnDistanceToCenter" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000614" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1014" name="PrecisionDependsOnDistanceToCenter(0.0f,100)" fullname="UltimaJugada.Tests.MatchRulesTests.PrecisionDependsOnDistanceToCenter(0.0f,100)" methodname="PrecisionDependsOnDistanceToCenter" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="452762637" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000160" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1015" name="PrecisionDependsOnDistanceToCenter(50.0f,50)" fullname="UltimaJugada.Tests.MatchRulesTests.PrecisionDependsOnDistanceToCenter(50.0f,50)" methodname="PrecisionDependsOnDistanceToCenter" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="687338697" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000029" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1016" name="PrecisionDependsOnDistanceToCenter(100.0f,0)" fullname="UltimaJugada.Tests.MatchRulesTests.PrecisionDependsOnDistanceToCenter(100.0f,0)" methodname="PrecisionDependsOnDistanceToCenter" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="837298979" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000028" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1017" name="PrecisionDependsOnDistanceToCenter(150.0f,0)" fullname="UltimaJugada.Tests.MatchRulesTests.PrecisionDependsOnDistanceToCenter(150.0f,0)" methodname="PrecisionDependsOnDistanceToCenter" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="1029866028" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000028" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1025" name="SweptContactFindsObjectsBetweenFrames" fullname="UltimaJugada.Tests.MatchRulesTests.SweptContactFindsObjectsBetweenFrames" methodname="SweptContactFindsObjectsBetweenFrames" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="2121547712" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000139" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1032" name="VerdictCoversAllScores" fullname="UltimaJugada.Tests.MatchRulesTests.VerdictCoversAllScores" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000612" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1029" name="VerdictCoversAllScores(2,1,&quot;VICTORIA&quot;)" fullname="UltimaJugada.Tests.MatchRulesTests.VerdictCoversAllScores(2,1,&quot;VICTORIA&quot;)" methodname="VerdictCoversAllScores" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="438450077" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000278" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1030" name="VerdictCoversAllScores(1,1,&quot;EMPATE&quot;)" fullname="UltimaJugada.Tests.MatchRulesTests.VerdictCoversAllScores(1,1,&quot;EMPATE&quot;)" methodname="VerdictCoversAllScores" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="340923837" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000036" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1031" name="VerdictCoversAllScores(0,2,&quot;DERROTA&quot;)" fullname="UltimaJugada.Tests.MatchRulesTests.VerdictCoversAllScores(0,2,&quot;DERROTA&quot;)" methodname="VerdictCoversAllScores" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="268000993" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000028" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="ParameterizedMethod" id="1006" name="WholeMatchHasSixActionsHalftimeAndMonotonicClock" fullname="UltimaJugada.Tests.MatchRulesTests.WholeMatchHasSixActionsHalftimeAndMonotonicClock" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.002203" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1003" name="WholeMatchHasSixActionsHalftimeAndMonotonicClock(1)" fullname="UltimaJugada.Tests.MatchRulesTests.WholeMatchHasSixActionsHalftimeAndMonotonicClock(1)" methodname="WholeMatchHasSixActionsHalftimeAndMonotonicClock" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="436960302" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.001580" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1004" name="WholeMatchHasSixActionsHalftimeAndMonotonicClock(42)" fullname="UltimaJugada.Tests.MatchRulesTests.WholeMatchHasSixActionsHalftimeAndMonotonicClock(42)" methodname="WholeMatchHasSixActionsHalftimeAndMonotonicClock" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="1426333883" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000164" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1005" name="WholeMatchHasSixActionsHalftimeAndMonotonicClock(2026)" fullname="UltimaJugada.Tests.MatchRulesTests.WholeMatchHasSixActionsHalftimeAndMonotonicClock(2026)" methodname="WholeMatchHasSixActionsHalftimeAndMonotonicClock" classname="UltimaJugada.Tests.MatchRulesTests" runstate="Runnable" seed="1516541618" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:30Z" duration="0.000158" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestFixture" id="1033" name="ProjectGenerationTests" fullname="UltimaJugada.Tests.ProjectGenerationTests" classname="UltimaJugada.Tests.ProjectGenerationTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:31Z" duration="0.874493" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="ParameterizedMethod" id="1036" name="GenerationRepairsInternalMaterialNameWhenFilenameIsAlreadyNormalized" fullname="UltimaJugada.Tests.ProjectGenerationTests.GenerationRepairsInternalMaterialNameWhenFilenameIsAlreadyNormalized" classname="UltimaJugada.Tests.ProjectGenerationTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:31Z" duration="0.597786" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1034" name="GenerationRepairsInternalMaterialNameWhenFilenameIsAlreadyNormalized(&quot;Cesped claro&quot;,&quot;Césped claro&quot;)" fullname="UltimaJugada.Tests.ProjectGenerationTests.GenerationRepairsInternalMaterialNameWhenFilenameIsAlreadyNormalized(&quot;Cesped claro&quot;,&quot;Césped claro&quot;)" methodname="GenerationRepairsInternalMaterialNameWhenFilenameIsAlreadyNormalized" classname="UltimaJugada.Tests.ProjectGenerationTests" runstate="Runnable" seed="1608818307" result="Passed" start-time="2026-10-19 12:03:30Z" end-time="2026-10-19 12:03:31Z" duration="0.323407" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Main Object Name 'Césped claro' does not match filename 'Cesped claro'
+Ultima Jugada: tres escenas listas. Presiona Play. Se conservaron las escenas y configuraciones existentes.
+]]></output>
+              </test-case>
+              <test-case id="1035" name="GenerationRepairsInternalMaterialNameWhenFilenameIsAlreadyNormalized(&quot;Cesped oscuro&quot;,&quot;Césped oscuro&quot;)" fullname="UltimaJugada.Tests.ProjectGenerationTests.GenerationRepairsInternalMaterialNameWhenFilenameIsAlreadyNormalized(&quot;Cesped oscuro&quot;,&quot;Césped oscuro&quot;)" methodname="GenerationRepairsInternalMaterialNameWhenFilenameIsAlreadyNormalized" classname="UltimaJugada.Tests.ProjectGenerationTests" runstate="Runnable" seed="1855670775" result="Passed" start-time="2026-10-19 12:03:31Z" end-time="2026-10-19 12:03:31Z" duration="0.273952" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Main Object Name 'Césped oscuro' does not match filename 'Cesped oscuro'
+Ultima Jugada: tres escenas listas. Presiona Play. Se conservaron las escenas y configuraciones existentes.
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-case id="1037" name="RepeatedGenerationPreservesScenesConfigurationAndGuids" fullname="UltimaJugada.Tests.ProjectGenerationTests.RepeatedGenerationPreservesScenesConfigurationAndGuids" methodname="RepeatedGenerationPreservesScenesConfigurationAndGuids" classname="UltimaJugada.Tests.ProjectGenerationTests" runstate="Runnable" seed="216559346" result="Passed" start-time="2026-10-19 12:03:31Z" end-time="2026-10-19 12:03:31Z" duration="0.276186" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Ultima Jugada: tres escenas listas. Presiona Play. Se conservaron las escenas y configuraciones existentes.
+Ultima Jugada: tres escenas listas. Presiona Play. Se conservaron las escenas y configuraciones existentes.
+Saving results to: /Users/matiasghf/Library/Application Support/Grupo 2 - UANDES/Ultima Jugada/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
